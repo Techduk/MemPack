@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://waxjt805ix24"]
+
+[ext_resource type="Script" path="res://Source/server.gd" id="1_8n65q"]
+[ext_resource type="PackedScene" uid="uid://cq8fd0fd4c6p6" path="res://Source/http_server.tscn" id="2_wo2ac"]
+
+[node name="Server" type="Node"]
+script = ExtResource("1_8n65q")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_left = 20.0
+offset_top = 16.0
+offset_right = 361.0
+offset_bottom = 628.0
+
+[node name="http_server" parent="." instance=ExtResource("2_wo2ac")]

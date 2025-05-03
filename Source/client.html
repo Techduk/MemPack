@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GodotJS Chat</title>
+    <script type="module">
+        import { Engine } from "https://cdn.jsdelivr.net/npm/godotjs@0.1.2/dist/engine.js";
+
+        const config = {
+            "canvas": "#canvas",
+            "executable": "game.wasm", // Ваш экспортированный проект
+            "args": []
+        };
+
+        class ChatClient {
+            constructor() {
+                this.ws = new WebSocket("ws://localhost:8080");
+                this.room = "default";
+                this.name = "Player" + Math.floor(Math.random() * 1000);
+                
+                this.ws.onopen = () => this.joinRoom();
+                this.ws.onmessage = (e) => this.handleMessage(e.data);
+            }
+
+            joinRoom() {
+                this.ws.send(JSON.stringify({
+                    type: "join",
+                    room: this.room,
+                    name: this.name
+                }));
+            }
+
+            sendMessage(text) {
+                this.ws.send(JSON.stringify({
+                    type: "chat",
+                    room: this.room,
+                    name: this.name,
+                    text: text
+                }));
+            }
+
+            handleMessage(data) {
+                const msg = JSON.parse(data);
+                Engine.get_singleton().call_deferred("emit_signal", "message_received", msg);
+            }
+        }
+
+        // Инициализация GodotJS
+        Engine.init(config).then(() => {
+            window.chat = new ChatClient();
+        });
+    </script>
+</head>
+<body>
+    <div id="canvas"></div>
+</body>
+</html>

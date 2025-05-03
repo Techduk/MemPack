@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://cvhpdsls313sr"]
+
+[ext_resource type="Script" path="res://Source/Scripts/node.gd" id="1_0tq5k"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_0tq5k")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 1086.0
+offset_top = 586.0
+offset_right = 1133.0
+offset_bottom = 630.0
+text = ">"
+
+[node name="TextEdit" type="TextEdit" parent="Button"]
+layout_mode = 0
+offset_left = -707.0
+offset_top = 1.0
+offset_right = -11.0
+offset_bottom = 43.0
+placeholder_text = "Write text here..."
