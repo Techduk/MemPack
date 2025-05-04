@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://dc4t2eahcbocf"]
+[gd_scene load_steps=3 format=3 uid="uid://dc4t2eahcbocf"]
 
 [ext_resource type="PackedScene" uid="uid://waxjt805ix24" path="res://Source/Server.tscn" id="1_o88fn"]
+[ext_resource type="PackedScene" uid="uid://dfdecp882esn8" path="res://Source/Chat.tscn" id="2_qhh83"]
 
 [node name="Main" type="Node"]
 
 [node name="Server" parent="." instance=ExtResource("1_o88fn")]
+
+[node name="ChatDisplay" parent="." instance=ExtResource("2_qhh83")]
