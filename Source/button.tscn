@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bgnbv1v6a5imh"]
+
+[ext_resource type="Theme" uid="uid://4tqvvqg0mod6" path="res://Source/MainTheme.tres" id="1_41ya2"]
+[ext_resource type="Texture2D" uid="uid://64n621wxmh7q" path="res://Source/Images/TemplateTitleImageGame.png" id="2_oa5n2"]
+
+[node name="Button" type="Button"]
+offset_right = 305.0
+offset_bottom = 157.0
+theme = ExtResource("1_41ya2")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 308.0
+offset_bottom = 155.0
+texture = ExtResource("2_oa5n2")
+expand_mode = 1

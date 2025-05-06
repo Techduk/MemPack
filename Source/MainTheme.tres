@@ -1,0 +1,22 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://4tqvvqg0mod6"]
+
+[ext_resource type="Texture2D" uid="uid://cm6fw66xp8sii" path="res://Source/Images/ButtonOutline.png" id="1_v64co"]
+[ext_resource type="Texture2D" uid="uid://l76fj04meij8" path="res://Source/Images/ButtonOutlineActive.png" id="2_k22ww"]
+[ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Source/Fonts/Pusia Bold.otf" id="3_4t8jn"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dx2n5"]
+texture = ExtResource("1_v64co")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kvs4q"]
+texture = ExtResource("2_k22ww")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f4eum"]
+texture = ExtResource("1_v64co")
+
+[resource]
+default_font = ExtResource("3_4t8jn")
+Button/colors/icon_focus_color = Color(1, 1, 1, 0)
+Button/styles/disabled = SubResource("StyleBoxTexture_dx2n5")
+Button/styles/focus = null
+Button/styles/hover = SubResource("StyleBoxTexture_kvs4q")
+Button/styles/normal = SubResource("StyleBoxTexture_f4eum")
