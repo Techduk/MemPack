@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://pj8btqqum8lu"
-path="res://.godot/imported/MaskTitleImageGame.png-41548c6c3941aa9c1f8301c97a6523ec.ctex"
+uid="uid://dhknglla8efqk"
+path="res://.godot/imported/MaskTitleImageGame.png-4d3df49ea23d8a0bfd8c632254b2eff3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Launcher/assets/Images/MaskTitleImageGame.png"
-dest_files=["res://.godot/imported/MaskTitleImageGame.png-41548c6c3941aa9c1f8301c97a6523ec.ctex"]
+source_file="res://Source/Images/MaskTitleImageGame.png"
+dest_files=["res://.godot/imported/MaskTitleImageGame.png-4d3df49ea23d8a0bfd8c632254b2eff3.ctex"]
 
 [params]
 
