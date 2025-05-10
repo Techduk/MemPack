@@ -1,0 +1,11 @@
+{
+	"fonts": "res://Launcher/assets/Fonts",
+	"images": "res://Launcher/assets/Images",
+	"shaders": "res://Launcher/assets/Shaders",
+	"themes": "res://Launcher/assets/Themes",
+	
+	"scenes": "res://Launcher/scenes",
+	"scripts": "res://Launcher/scripts",
+	"sounds": "res://Launcher/sound/sfx",
+	"music": "res://Launcher/sound/music"
+}
