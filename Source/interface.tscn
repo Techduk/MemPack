@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://03jm60stu5i6"]
+[gd_scene load_steps=6 format=3 uid="uid://03jm60stu5i6"]
 
 [ext_resource type="Texture2D" uid="uid://eo8ge1h6emb5" path="res://Source/Images/Logo.png" id="1_1gjum"]
 [ext_resource type="Script" path="res://Source/Launcher.gd" id="1_oa7rf"]
 [ext_resource type="Theme" uid="uid://4tqvvqg0mod6" path="res://Source/MainTheme.tres" id="3_2ljhi"]
 [ext_resource type="Texture2D" uid="uid://vh5sk4boidxk" path="res://Source/Images/search.svg" id="4_haytc"]
+[ext_resource type="PackedScene" uid="uid://bgnbv1v6a5imh" path="res://Source/button.tscn" id="5_us1st"]
 
 [node name="Interface" type="Control"]
 layout_mode = 3
@@ -60,12 +61,18 @@ offset_bottom = 1028.0
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 1848.0
-offset_bottom = 824.0
+offset_right = 1240.0
+offset_bottom = 557.0
+scale = Vector2(1.5, 1.5)
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/DownPanel/ScrollContainer"]
-clip_contents = true
+[node name="GridContainer" type="GridContainer" parent="Panel/DownPanel/ScrollContainer"]
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 3
+size_flags_vertical = 2
+columns = 3
+
+[node name="Button" parent="Panel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("5_us1st")]
+custom_minimum_size = Vector2(402, 202)
+layout_mode = 2

@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 var PACK_DIR = ""
 
@@ -81,8 +81,8 @@ func import_pack():
 					button_instance.position = Vector2(50, 50)
 					if button_instance is Button:
 						button_instance.connect("pressed", Callable(self, "_on_pack_button_pressed").bind(manifest, pack_buffer))
-					add_child(button_instance)
-					print("Кнопка добавлена для пака: ", manifest["name"])
+					$Panel/DownPanel/ScrollContainer/GridContainer.add_child(button_instance)
+					print("Кнопка добавлена в GridContainer для пака: ", manifest["name"])
 				else:
 					print("Ошибка: не найдена сцена button.tscn")
 			else:
