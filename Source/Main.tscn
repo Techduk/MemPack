@@ -1,10 +1,50 @@
-[gd_scene load_steps=3 format=3 uid="uid://dc4t2eahcbocf"]
+[gd_scene load_steps=4 format=3 uid="uid://dc4t2eahcbocf"]
 
-[ext_resource type="PackedScene" uid="uid://waxjt805ix24" path="res://Source/Server.tscn" id="1_o88fn"]
-[ext_resource type="PackedScene" uid="uid://dfdecp882esn8" path="res://Source/Chat.tscn" id="2_qhh83"]
+[ext_resource type="PackedScene" uid="uid://d06p2pwxoqwdh" path="res://Source/background.tscn" id="1_3cc3b"]
+[ext_resource type="PackedScene" uid="uid://03jm60stu5i6" path="res://Source/interface.tscn" id="3_y2ngr"]
+
+[sub_resource type="GDScript" id="GDScript_ofcyg"]
+resource_name = "MainScript"
+script/source = "extends Node
+
+# Переменная для отслеживания текущего состояния
+var is_fullscreen = false
+
+func _ready():
+	# Устанавливаем начальное состояние окна
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+	DisplayServer.window_set_size(Vector2i(1280, 720))
+	var screen_size = DisplayServer.screen_get_size()
+	var window_size = Vector2i(1280, 720)
+	DisplayServer.window_set_position((screen_size - window_size) / 2)
+	is_fullscreen = false
+
+func _input(event):
+	# Проверяем, была ли нажата клавиша F11
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_F11:
+			toggle_fullscreen()
+
+func toggle_fullscreen():
+	if is_fullscreen:
+		# Переключаем в оконный режим 1280x720
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_size(Vector2i(1280, 720))
+		# Центрируем окно (опционально)
+		var screen_size = DisplayServer.screen_get_size()
+		var window_size = Vector2i(1280, 720)
+		DisplayServer.window_set_position((screen_size - window_size) / 2)
+	else:
+		# Переключаем в полноэкранный режим
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	
+	# Инвертируем состояние
+	is_fullscreen = !is_fullscreen
+"
 
 [node name="Main" type="Node"]
+script = SubResource("GDScript_ofcyg")
 
-[node name="Server" parent="." instance=ExtResource("1_o88fn")]
+[node name="Background" parent="." instance=ExtResource("1_3cc3b")]
 
-[node name="ChatDisplay" parent="." instance=ExtResource("2_qhh83")]
+[node name="Interface" parent="." instance=ExtResource("3_y2ngr")]

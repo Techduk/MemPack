@@ -1,0 +1,53 @@
+[gd_scene load_steps=7 format=3 uid="uid://nggx2ccwwm20"]
+
+[ext_resource type="Script" path="res://Source/Scripts/game_card.gd" id="1_fimii"]
+[ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Source/Fonts/Pusia Bold.otf" id="2_4j7ah"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vp2at"]
+
+[sub_resource type="Gradient" id="Gradient_e806i"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7y8la"]
+gradient = SubResource("Gradient_e806i")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5fgeb"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_fimii")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 560.0
+offset_top = 140.0
+offset_right = 1360.0
+offset_bottom = 940.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_vp2at")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 800.0
+offset_bottom = 800.0
+
+[node name="Prewiew" type="TextureRect" parent="Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("GradientTexture1D_7y8la")
+expand_mode = 1
+
+[node name="DescriptionLabel" type="Label" parent="Panel/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+
+[node name="PlayButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 216.0
+offset_top = 700.0
+offset_right = 425.0
+offset_bottom = 784.0
+theme_override_fonts/font = ExtResource("2_4j7ah")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5fgeb")
+text = "Запустить"

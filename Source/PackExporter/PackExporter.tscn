@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cr3jylw4pv7a8"]
+
+[ext_resource type="Script" path="res://Source/PackExporter/PacManExport.gd" id="1_tir25"]
+
+[node name="PackExporter" type="Node"]
+script = ExtResource("1_tir25")

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=7 format=3 uid="uid://4tqvvqg0mod6"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://4tqvvqg0mod6"]
 
 [ext_resource type="Texture2D" uid="uid://cm6fw66xp8sii" path="res://Source/Images/ButtonOutline.png" id="1_v64co"]
 [ext_resource type="Texture2D" uid="uid://l76fj04meij8" path="res://Source/Images/ButtonOutlineActive.png" id="2_k22ww"]
@@ -7,16 +7,43 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dx2n5"]
 texture = ExtResource("1_v64co")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fsnkt"]
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kvs4q"]
 texture = ExtResource("2_k22ww")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f4eum"]
 texture = ExtResource("1_v64co")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8a150"]
+texture = ExtResource("2_k22ww")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m3cxm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwige"]
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+border_width_left = 10
+border_width_right = 10
+border_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+corner_radius_top_left = 1024
+corner_radius_top_right = 1024
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+corner_detail = 20
+expand_margin_left = 10.0
+expand_margin_right = 10.0
+
 [resource]
 default_font = ExtResource("3_4t8jn")
 Button/colors/icon_focus_color = Color(1, 1, 1, 0)
 Button/styles/disabled = SubResource("StyleBoxTexture_dx2n5")
-Button/styles/focus = null
+Button/styles/focus = SubResource("StyleBoxEmpty_fsnkt")
 Button/styles/hover = SubResource("StyleBoxTexture_kvs4q")
 Button/styles/normal = SubResource("StyleBoxTexture_f4eum")
+Button/styles/pressed = SubResource("StyleBoxTexture_8a150")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.784314)
+LineEdit/colors/selection_color = Color(0.5, 0.5, 0.5, 0.392157)
+LineEdit/font_sizes/font_size = 42
+LineEdit/styles/focus = SubResource("StyleBoxEmpty_m3cxm")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_xwige")

@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://waxjt805ix24"]
+[gd_scene load_steps=3 format=3 uid="uid://waxjt805ix24"]
 
 [ext_resource type="Script" path="res://Source/server.gd" id="1_8n65q"]
+[ext_resource type="PackedScene" uid="uid://dfdecp882esn8" path="res://Source/Chat.tscn" id="2_bcqwg"]
 
 [node name="Server" type="Node"]
 script = ExtResource("1_8n65q")
+
+[node name="ChatDisplay" parent="." instance=ExtResource("2_bcqwg")]
