@@ -48,4 +48,3 @@ script = SubResource("GDScript_ofcyg")
 [node name="Background" parent="." instance=ExtResource("1_3cc3b")]
 
 [node name="Interface" parent="." instance=ExtResource("3_y2ngr")]
-script = null

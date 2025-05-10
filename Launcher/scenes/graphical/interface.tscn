@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://03jm60stu5i6"]
 
-[ext_resource type="Texture2D" uid="uid://dsjdpead1plae" path="res://Launcher/assets/Images/Logo.png" id="1_1gjum"]
+[ext_resource type="Texture2D" uid="uid://eo8ge1h6emb5" path="res://Launcher/assets/Images/Logo.png" id="1_1gjum"]
 [ext_resource type="Script" path="res://Launcher/scripts/functional/Launcher.gd" id="1_oa7rf"]
-[ext_resource type="Theme" uid="uid://4tqvvqg0mod6" path="res://Launcher/assets/Themes/MainTheme.tres" id="3_2ljhi"]
+[ext_resource type="Theme" uid="uid://d28v2fhfj0c73" path="res://Launcher/assets/Themes/MainTheme.tres" id="3_2ljhi"]
 [ext_resource type="Texture2D" uid="uid://d0ovc8gtxojl5" path="res://Launcher/assets/Images/icons/search.svg" id="4_haytc"]
 [ext_resource type="PackedScene" uid="uid://bgnbv1v6a5imh" path="res://Launcher/scenes/functional/button.tscn" id="5_us1st"]
 

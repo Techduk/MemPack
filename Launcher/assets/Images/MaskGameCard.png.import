@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ynapk871ubmt"
-path="res://.godot/imported/MaskGameCard.png-97abde9652d5a11964a3bece18f33a6c.ctex"
+path="res://.godot/imported/MaskGameCard.png-646707104bb39b1bd2b3de36bdc74aa7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Source/Images/MaskGameCard.png"
-dest_files=["res://.godot/imported/MaskGameCard.png-97abde9652d5a11964a3bece18f33a6c.ctex"]
+source_file="res://Launcher/assets/Images/MaskGameCard.png"
+dest_files=["res://.godot/imported/MaskGameCard.png-646707104bb39b1bd2b3de36bdc74aa7.ctex"]
 
 [params]
 

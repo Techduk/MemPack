@@ -1,16 +1,22 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://d28v2fhfj0c73"]
+[gd_resource type="Theme" load_steps=11 format=3 uid="uid://d28v2fhfj0c73"]
 
+[ext_resource type="Texture2D" uid="uid://cm6fw66xp8sii" path="res://Launcher/assets/Images/ButtonOutline.png" id="1_wpwas"]
+[ext_resource type="Texture2D" uid="uid://l76fj04meij8" path="res://Launcher/assets/Images/ButtonOutlineActive.png" id="2_3g3yb"]
 [ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Launcher/assets/Fonts/Pusia Bold.otf" id="3_4t8jn"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dx2n5"]
+texture = ExtResource("1_wpwas")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_fsnkt"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kvs4q"]
+texture = ExtResource("2_3g3yb")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_f4eum"]
+texture = ExtResource("1_wpwas")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_8a150"]
+texture = ExtResource("1_wpwas")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_m3cxm"]
 

@@ -1,1 +1,0 @@
-https://godotjs.github.io/documentation/typescript/intro/

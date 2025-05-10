@@ -64,14 +64,15 @@ func import_pack():
 					print("Ошибка загрузки PNG: ", err)
 					return
 				
-				var debug_file = FileAccess.open("user://thumbnail_debug.png", FileAccess.WRITE)
-				if debug_file:
-					debug_file.store_buffer(thumbnail_data)
-					debug_file.close()
-					print("Thumbnail сохранён: user://thumbnail_debug.png")
+				# Проверка импорта .mempack через экспорт из пака изображения.
+				#var debug_file = FileAccess.open("user://thumbnail_debug.png", FileAccess.WRITE)
+				#if debug_file:
+				#	debug_file.store_buffer(thumbnail_data)
+				#	debug_file.close()
+				#	print("Thumbnail сохранён: user://thumbnail_debug.png")
 				
-				if ResourceLoader.exists("res://Source/button.tscn"):
-					var button_scene = load("res://Source/button.tscn")
+				if ResourceLoader.exists("res://Launcher/scenes/functional/button.tscn"):
+					var button_scene = load("res://Launcher/scenes/functional/button.tscn")
 					var button_instance = button_scene.instantiate()
 					var thumbnail_node = button_instance.get_node("thumbnail")
 					if thumbnail_node and thumbnail_node is TextureRect:
@@ -92,8 +93,8 @@ func import_pack():
 
 func _on_pack_button_pressed(pack_data: Dictionary, pack_buffer: PackedByteArray):
 	print("Открытие карточки пака: ", pack_data["name"])
-	if ResourceLoader.exists("res://Source/GameCard.tscn"):
-		var card_scene = load("res://Source/GameCard.tscn")
+	if ResourceLoader.exists("res://Launcher/scenes/graphical/GameCard.tscn"):
+		var card_scene = load("res://Launcher/scenes/graphical/GameCard.tscn")
 		var card_instance = card_scene.instantiate()
 		card_instance.set_data(pack_data, pack_buffer)
 		add_child(card_instance)
