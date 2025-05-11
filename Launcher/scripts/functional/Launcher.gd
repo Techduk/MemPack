@@ -1,6 +1,7 @@
 extends Control
 
 var PACK_DIR = ""
+var open_cards: Dictionary = {}  # Хранит открытые карточки по имени пака
 
 func _ready():
 	PACK_DIR = OS.get_executable_path().get_base_dir() + "/packs/"
@@ -64,13 +65,6 @@ func import_pack():
 					print("Ошибка загрузки PNG: ", err)
 					return
 				
-				# Проверка импорта .mempack через экспорт из пака изображения.
-				#var debug_file = FileAccess.open("user://thumbnail_debug.png", FileAccess.WRITE)
-				#if debug_file:
-				#	debug_file.store_buffer(thumbnail_data)
-				#	debug_file.close()
-				#	print("Thumbnail сохранён: user://thumbnail_debug.png")
-				
 				if ResourceLoader.exists("res://Launcher/scenes/functional/button.tscn"):
 					var button_scene = load("res://Launcher/scenes/functional/button.tscn")
 					var button_instance = button_scene.instantiate()
@@ -82,7 +76,7 @@ func import_pack():
 					button_instance.position = Vector2(50, 50)
 					if button_instance is Button:
 						button_instance.connect("pressed", Callable(self, "_on_pack_button_pressed").bind(manifest, pack_buffer))
-					$Panel/DownPanel/ScrollContainer/GridContainer.add_child(button_instance)
+					$HBC/Panel/DownPanel/ScrollContainer/GridContainer.add_child(button_instance)
 					print("Кнопка добавлена в GridContainer для пака: ", manifest["name"])
 				else:
 					print("Ошибка: не найдена сцена button.tscn")
@@ -92,14 +86,28 @@ func import_pack():
 	dir.list_dir_end()
 
 func _on_pack_button_pressed(pack_data: Dictionary, pack_buffer: PackedByteArray):
-	print("Открытие карточки пака: ", pack_data["name"])
-	if ResourceLoader.exists("res://Launcher/scenes/graphical/GameCard.tscn"):
-		var card_scene = load("res://Launcher/scenes/graphical/GameCard.tscn")
-		var card_instance = card_scene.instantiate()
-		card_instance.set_data(pack_data, pack_buffer)
-		add_child(card_instance)
-		print("Карточка пака добавлена: ", pack_data["name"])
+	var pack_name = pack_data["name"]
+	print("Открытие карточки пака: ", pack_name)
+	
+	# Проверяем, открыта ли уже карточка для этого пака
+	if pack_name in open_cards and is_instance_valid(open_cards[pack_name]):
+		print("Карточка для пака ", pack_name, " уже открыта, обновляем её")
+		open_cards[pack_name].set_data(pack_data, pack_buffer)
 	else:
-		print("Ошибка: не удалось загрузить сцену res://Source/GameCard.tscn")
+		# Если карточка не открыта, создаём новую
+		if ResourceLoader.exists("res://Launcher/scenes/graphical/GameCard.tscn"):
+			var card_scene = load("res://Launcher/scenes/graphical/GameCard.tscn")
+			var card_instance = card_scene.instantiate()
+			card_instance.set_data(pack_data, pack_buffer)
+			$HBC.add_child(card_instance)
+			open_cards[pack_name] = card_instance
+			print("Карточка пака добавлена: ", pack_name)
+			
+			# Подключаем сигнал для удаления карточки из словаря при закрытии
+			card_instance.connect("tree_exited", Callable(self, "_on_card_closed").bind(pack_name))
+		else:
+			print("Ошибка: не удалось загрузить сцену res://Launcher/scenes/graphical/GameCard.tscn")
 
-		#заменить принты на err push
+func _on_card_closed(pack_name: String):
+	print("Карточка пака ", pack_name, " закрыта, удаляем из словаря")
+	open_cards.erase(pack_name)

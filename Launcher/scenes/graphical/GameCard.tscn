@@ -1,16 +1,16 @@
-[gd_scene load_steps=11 format=3 uid="uid://nggx2ccwwm20"]
+[gd_scene load_steps=14 format=3 uid="uid://nggx2ccwwm20"]
 
 [ext_resource type="Script" path="res://Launcher/scripts/graphical/game_card.gd" id="1_fimii"]
-[ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Launcher/assets/Fonts/Pusia Bold.otf" id="2_4j7ah"]
 [ext_resource type="Shader" path="res://Launcher/assets/Shaders/buttonTexture.gdshader" id="2_lklog"]
-[ext_resource type="Texture2D" uid="uid://cctdv0obgicrc" path="res://Launcher/assets/Images/MaskGameCard.png" id="3_l1rbo"]
+[ext_resource type="Texture2D" uid="uid://ynapk871ubmt" path="res://Launcher/assets/Images/MaskGameCard.png" id="3_l1rbo"]
 [ext_resource type="Theme" uid="uid://yondnf1ljmo0" path="res://Launcher/assets/Themes/GameCardtheme.tres" id="4_6005q"]
+[ext_resource type="Texture2D" uid="uid://bv6tte1cubce4" path="res://Launcher/assets/Images/prewiew.png" id="5_v5egh"]
+[ext_resource type="Texture2D" uid="uid://v7bi66tqdlyd" path="res://Launcher/assets/Images/close.button.png" id="6_hsxyu"]
+[ext_resource type="Texture2D" uid="uid://hnqxohug413t" path="res://Launcher/assets/Images/close.button.active.png" id="7_f5xwl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vp2at"]
-bg_color = Color(0.07, 0.07, 0.07, 1)
+bg_color = Color(0.0705882, 0.0705882, 0.0705882, 0.941176)
 corner_radius_top_left = 25
-corner_radius_top_right = 25
-corner_radius_bottom_right = 25
 corner_radius_bottom_left = 25
 corner_detail = 20
 
@@ -18,52 +18,95 @@ corner_detail = 20
 shader = ExtResource("2_lklog")
 shader_parameter/texture_mask = ExtResource("3_l1rbo")
 
-[sub_resource type="Gradient" id="Gradient_e806i"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bjn5v"]
+texture = ExtResource("6_hsxyu")
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_7y8la"]
-gradient = SubResource("Gradient_e806i")
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_daw7y"]
+texture = ExtResource("7_f5xwl")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5fgeb"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wgy0t"]
+texture = ExtResource("6_hsxyu")
 
-[node name="Control" type="Control"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_en8v6"]
+texture = ExtResource("6_hsxyu")
+
+[node name="GameCard" type="Control"]
 z_index = 10
 layout_mode = 3
 anchors_preset = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_fimii")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_left = 560.0
-offset_top = 140.0
-offset_right = 1360.0
-offset_bottom = 940.0
+offset_right = 640.0
+offset_bottom = 1080.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_vp2at")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 0
-offset_right = 800.0
-offset_bottom = 800.0
+offset_top = -1.0
+offset_right = 640.0
+offset_bottom = 959.0
 
-[node name="Prewiew" type="TextureRect" parent="Panel/HBoxContainer"]
+[node name="Prewiew" type="TextureRect" parent="Panel/VBoxContainer"]
 material = SubResource("ShaderMaterial_un6ah")
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.08
 theme = ExtResource("4_6005q")
-texture = SubResource("GradientTexture1D_7y8la")
+texture = ExtResource("5_v5egh")
 expand_mode = 1
 
-[node name="DescriptionLabel" type="Label" parent="Panel/HBoxContainer"]
+[node name="DescriptionLabel" type="Label" parent="Panel/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
+size_flags_vertical = 3
+size_flags_stretch_ratio = 2.74
 
 [node name="PlayButton" type="Button" parent="Panel"]
-layout_mode = 0
-offset_left = 216.0
-offset_top = 700.0
-offset_right = 425.0
-offset_bottom = 784.0
-theme_override_fonts/font = ExtResource("2_4j7ah")
-theme_override_font_sizes/font_size = 42
-theme_override_styles/focus = SubResource("StyleBoxEmpty_5fgeb")
-text = "Запустить"
+custom_minimum_size = Vector2(265, 92)
+layout_direction = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -285.0
+offset_top = -112.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+pivot_offset = Vector2(132.5, 46)
+theme = ExtResource("4_6005q")
+theme_type_variation = &"FlatButton"
+text = "  Запустить"
+alignment = 0
+
+[node name="Close" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(110, 111)
+layout_direction = 1
+layout_mode = 1
+offset_left = 4.0
+offset_right = 114.0
+offset_bottom = 111.0
+rotation = -0.174533
+scale = Vector2(0.8, 0.8)
+pivot_offset = Vector2(55, 55.5)
+theme = ExtResource("4_6005q")
+theme_type_variation = &"FlatButton"
+theme_override_styles/disabled = SubResource("StyleBoxTexture_bjn5v")
+theme_override_styles/hover = SubResource("StyleBoxTexture_daw7y")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wgy0t")
+theme_override_styles/normal = SubResource("StyleBoxTexture_en8v6")
+text = "
+"
+alignment = 0
+
+[connection signal="mouse_entered" from="Panel/PlayButton" to="." method="_start_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/PlayButton" to="." method="_start_mouse_exited"]
+[connection signal="mouse_entered" from="Panel/Close" to="." method="_close_mouse_entered"]
+[connection signal="mouse_exited" from="Panel/Close" to="." method="_close_mouse_exited"]

@@ -3,12 +3,24 @@ extends Control
 var pack_data: Dictionary
 var pack_buffer: PackedByteArray
 
+func _ready():
+	# Подключаем сигналы один раз при создании карточки
+	var play_button = $Panel/PlayButton
+	if play_button and play_button is Button:
+		play_button.connect("pressed", Callable(self, "_on_play_button_pressed"))
+		print("Кнопка 'Играть' подключена")
+	
+	var close_button = $Panel/Close
+	if close_button and close_button is Button:
+		close_button.connect("pressed", Callable(self, "_on_close_button_pressed"))
+		print("Кнопка 'Close' подключена")
+
 func set_data(data: Dictionary, buffer: PackedByteArray):
 	pack_data = data
 	pack_buffer = buffer
 	
 	# Устанавливаем имя пака в описание
-	var description_node = $Panel/HBoxContainer/DescriptionLabel
+	var description_node = $Panel/VBoxContainer/DescriptionLabel
 	if description_node and description_node is Label:
 		description_node.text = pack_data.get("name", "Unknown Pack")
 		print("Описание установлено: ", description_node.text)
@@ -37,17 +49,11 @@ func set_data(data: Dictionary, buffer: PackedByteArray):
 		print("Ошибка загрузки PNG: ", err)
 		return
 	
-	var thumbnail_node = $Panel/HBoxContainer/Prewiew
+	var thumbnail_node = $Panel/VBoxContainer/Prewiew
 	if thumbnail_node and thumbnail_node is TextureRect:
 		var texture = ImageTexture.create_from_image(img)
 		thumbnail_node.texture = texture
 		print("Обложка установлена для карточки пака: ", pack_data["name"])
-	
-	# Подключаем кнопку "Играть"
-	var play_button = $Panel/PlayButton
-	if play_button and play_button is Button:
-		play_button.connect("pressed", Callable(self, "_on_play_button_pressed"))
-		print("Кнопка 'Играть' подключена")
 
 func _on_play_button_pressed():
 	print("Запуск пака: ", pack_data["name"])
@@ -86,3 +92,20 @@ func _on_play_button_pressed():
 		return
 	
 	print("Успешно переключились на сцену пака: ", pack_data["name"])
+
+func _on_close_button_pressed():
+	print("Закрытие карточки пака: ", pack_data["name"])
+	queue_free()
+	print("Карточка пака успешно закрыта")
+
+func _start_mouse_entered():
+	$Panel/PlayButton.scale = Vector2(1.05, 1.05)
+
+func _start_mouse_exited():
+	$Panel/PlayButton.scale = Vector2(1, 1)
+
+func _close_mouse_entered():
+	$Panel/Close.scale = Vector2(0.85, 0.85)
+	
+func _close_mouse_exited():
+	$Panel/Close.scale = Vector2(0.8, 0.8)

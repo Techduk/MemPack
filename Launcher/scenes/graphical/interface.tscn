@@ -13,32 +13,38 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_oa7rf")
 
-[node name="Panel" type="Panel" parent="."]
+[node name="HBC" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 1900.0
-offset_bottom = 1060.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
-[node name="UpPanel" type="Panel" parent="Panel"]
+[node name="Panel" type="Panel" parent="HBC"]
+custom_minimum_size = Vector2(1280, 1080)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="UpPanel" type="Panel" parent="HBC/Panel"]
 layout_mode = 0
 offset_left = 12.0
 offset_top = 12.0
 offset_right = 1868.0
 offset_bottom = 180.0
 
-[node name="TextureRect" type="TextureRect" parent="Panel/UpPanel"]
+[node name="TextureRect" type="TextureRect" parent="HBC/Panel/UpPanel"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
-offset_right = 217.0
+offset_right = 218.0
 offset_bottom = 160.0
+pivot_offset = Vector2(0, 76)
 texture = ExtResource("1_1gjum")
 expand_mode = 1
 
-[node name="LineEdit" type="LineEdit" parent="Panel/UpPanel"]
+[node name="LineEdit" type="LineEdit" parent="HBC/Panel/UpPanel"]
 layout_mode = 0
 offset_left = 240.0
 offset_top = 48.0
@@ -50,14 +56,14 @@ alignment = 2
 max_length = 100
 right_icon = ExtResource("4_haytc")
 
-[node name="DownPanel" type="Panel" parent="Panel"]
+[node name="DownPanel" type="Panel" parent="HBC/Panel"]
 layout_mode = 0
 offset_left = 12.0
 offset_top = 196.0
 offset_right = 1868.0
 offset_bottom = 1028.0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/DownPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBC/Panel/DownPanel"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
@@ -67,12 +73,12 @@ scale = Vector2(1.5, 1.5)
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="GridContainer" type="GridContainer" parent="Panel/DownPanel/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="HBC/Panel/DownPanel/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 columns = 3
 
-[node name="Button" parent="Panel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("5_us1st")]
+[node name="Button" parent="HBC/Panel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("5_us1st")]
 custom_minimum_size = Vector2(402, 202)
 layout_mode = 2
