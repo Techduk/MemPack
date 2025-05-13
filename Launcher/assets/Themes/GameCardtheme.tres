@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=9 format=3 uid="uid://yondnf1ljmo0"]
+[gd_resource type="Theme" load_steps=10 format=3 uid="uid://yondnf1ljmo0"]
 
 [ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Launcher/assets/Fonts/Pusia Bold.otf" id="1_i4knm"]
 [ext_resource type="Texture2D" uid="uid://b82b0xwqodk08" path="res://Launcher/assets/Images/start.button.png" id="2_2rwjn"]
@@ -18,7 +18,12 @@ texture = ExtResource("2_2rwjn")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4cfpk"]
 texture = ExtResource("2_2rwjn")
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mj4g2"]
+content_margin_left = 15.0
+content_margin_right = 15.0
+
 [resource]
+default_font = ExtResource("1_i4knm")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_focus_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(1, 1, 1, 1)
@@ -29,3 +34,5 @@ Button/styles/focus = SubResource("StyleBoxEmpty_xj3aq")
 Button/styles/hover = SubResource("StyleBoxTexture_gjl0w")
 Button/styles/normal = SubResource("StyleBoxTexture_3eqgv")
 Button/styles/pressed = SubResource("StyleBoxTexture_4cfpk")
+Label/font_sizes/font_size = 40
+Label/styles/normal = SubResource("StyleBoxEmpty_mj4g2")

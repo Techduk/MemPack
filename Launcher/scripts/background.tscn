@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://d06p2pwxoqwdh"]
+[gd_scene load_steps=11 format=3 uid="uid://d06p2pwxoqwdh"]
 
 [ext_resource type="Shader" path="res://Launcher/assets/Shaders/AnimatedBackground.gdshader" id="1_20qcs"]
+[ext_resource type="Shader" path="res://Launcher/assets/Shaders/AnimatedBackgroundUpcase.gdshader" id="2_t0yy8"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbkdg"]
 
@@ -24,10 +25,39 @@ colors = PackedColorArray(0.0705882, 0.0313726, 0.0941176, 1, 0.0705882, 0.03137
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_w5sr4"]
 gradient = SubResource("Gradient_pjfxb")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kd68k"]
+shader = ExtResource("2_t0yy8")
+shader_parameter/spin_rotation_speed = 17.03
+shader_parameter/move_speed = 7.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.0786885, 0.00614247, 0.0781935, 1)
+shader_parameter/colour_2 = Color(0.151827, 0.121625, 0.320502, 1)
+shader_parameter/colour_3 = Color(0.0951708, 0.00361901, 0.0818799, 1)
+shader_parameter/contrast = 3.5
+shader_parameter/lighting = 0.24
+shader_parameter/spin_amount = 0.25
+shader_parameter/pixel_filter = 195.575
+shader_parameter/is_rotating = false
+
+[sub_resource type="Gradient" id="Gradient_8n2p5"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_nf18l"]
+gradient = SubResource("Gradient_8n2p5")
+width = 1
+
 [node name="Background" type="Node2D"]
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="BG" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_pyov6")
 position = Vector2(961.75, 546.75)
 scale = Vector2(7.58008, 1112.5)
 texture = SubResource("GradientTexture1D_w5sr4")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+visible = false
+material = SubResource("ShaderMaterial_kd68k")
+position = Vector2(959.75, 546.683)
+rotation = 3.14159
+scale = Vector2(1920.5, 1094.37)
+texture = SubResource("GradientTexture1D_nf18l")

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://waxjt805ix24" path="res://Packs/DeBity/Server.tscn" id="1_snw5s"]
 [ext_resource type="Texture2D" uid="uid://cjnlwmd1jq2n1" path="res://Packs/DeBity/oh.png" id="2_1alqp"]
-[ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Source/Fonts/Pusia Bold.otf" id="3_5shko"]
+[ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Launcher/assets/Fonts/Pusia Bold.otf" id="3_5shko"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_pg5hf"]
 line_spacing = 3.4
@@ -12,6 +12,7 @@ font_size = 381
 [node name="Main" type="Node"]
 
 [node name="Server" parent="." instance=ExtResource("1_snw5s")]
+script = null
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(1611, 260)

@@ -26,33 +26,33 @@ func set_data(data: Dictionary, buffer: PackedByteArray):
 		print("Описание установлено: ", description_node.text)
 	
 	# Устанавливаем обложку
-	var thumbnail_key = pack_data.get("thumbnail", "thumbnail.png")
-	if not thumbnail_key in pack_data["asset_offsets"]:
-		print("Ошибка: thumbnail ", thumbnail_key, " не найден в asset_offsets")
+	var preview_key = pack_data.get("preview", "preview.png")
+	if not preview_key in pack_data["asset_offsets"]:
+		print("Ошибка: preview ", preview_key, " не найден в asset_offsets")
 		return
 	
-	var thumbnail_offset = pack_data["asset_offsets"][thumbnail_key]["offset"]
-	var thumbnail_size = pack_data["asset_offsets"][thumbnail_key]["size"]
-	var thumbnail_data = pack_buffer.slice(thumbnail_offset, thumbnail_offset + thumbnail_size)
+	var preview_offset = pack_data["asset_offsets"][preview_key]["offset"]
+	var preview_size = pack_data["asset_offsets"][preview_key]["size"]
+	var preview_data = pack_buffer.slice(preview_offset, preview_offset + preview_size)
 	
-	if thumbnail_data.size() != thumbnail_size:
-		print("Ошибка: размер thumbnail не совпадает, ожидалось ", thumbnail_size, ", получено ", thumbnail_data.size())
+	if preview_data.size() != preview_size:
+		print("Ошибка: размер preview не совпадает, ожидалось ", preview_size, ", получено ", preview_data.size())
 		return
 	
-	if thumbnail_data[0] != 137 or thumbnail_data[1] != 80 or thumbnail_data[2] != 78 or thumbnail_data[3] != 71:
-		print("Ошибка: thumbnail не является валидным PNG")
+	if preview_data[0] != 137 or preview_data[1] != 80 or preview_data[2] != 78 or preview_data[3] != 71:
+		print("Ошибка: preview не является валидным PNG")
 		return
 	
 	var img = Image.new()
-	var err = img.load_png_from_buffer(thumbnail_data)
+	var err = img.load_png_from_buffer(preview_data)
 	if err != OK:
 		print("Ошибка загрузки PNG: ", err)
 		return
 	
-	var thumbnail_node = $Panel/VBoxContainer/Prewiew
-	if thumbnail_node and thumbnail_node is TextureRect:
+	var preview_node = $Panel/VBoxContainer/Prewiew
+	if preview_node and preview_node is TextureRect:
 		var texture = ImageTexture.create_from_image(img)
-		thumbnail_node.texture = texture
+		preview_node.texture = texture
 		print("Обложка установлена для карточки пака: ", pack_data["name"])
 
 func _on_play_button_pressed():
@@ -99,13 +99,17 @@ func _on_close_button_pressed():
 	print("Карточка пака успешно закрыта")
 
 func _start_mouse_entered():
-	$Panel/PlayButton.scale = Vector2(1.05, 1.05)
+	var tween = create_tween()
+	tween.tween_property($Panel/PlayButton, "scale", Vector2(1.05, 1.05), 0.3).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 func _start_mouse_exited():
-	$Panel/PlayButton.scale = Vector2(1, 1)
+	var tween = create_tween()
+	tween.tween_property($Panel/PlayButton, "scale", Vector2(1, 1), 0.3).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 
 func _close_mouse_entered():
-	$Panel/Close.scale = Vector2(0.85, 0.85)
-	
+	var tween = create_tween()
+	tween.tween_property($Panel/Close, "scale", Vector2(0.85, 0.85), 0.3).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+
 func _close_mouse_exited():
-	$Panel/Close.scale = Vector2(0.8, 0.8)
+	var tween = create_tween()
+	tween.tween_property($Panel/Close, "scale", Vector2(0.8, 0.8), 0.3).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)

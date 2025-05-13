@@ -39,8 +39,11 @@ func _process(delta):
 	elif state == WebSocketPeer.STATE_CLOSING:
 		print("WebSocket closing...")
 	elif state == WebSocketPeer.STATE_CLOSED:
-		print("WebSocket closed")
-		_show_warning("Connection to server lost. Try restarting the game.")
+		var _is_connection_closed_warning_shown = false
+		if not _is_connection_closed_warning_shown:
+			print("WebSocket closed")
+			_show_warning("Connection to server lost. Try restarting the game.")
+			_is_connection_closed_warning_shown = true  # Запрещаем повторный показ)
 	
 	while ws.get_available_packet_count() > 0:
 		var packet = ws.get_packet()

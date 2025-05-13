@@ -22,9 +22,11 @@ texture = ExtResource("1_wpwas")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xwige"]
 bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
-border_width_left = 10
-border_width_right = 10
-border_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.152941, 0.152941, 0.152941, 1)
 corner_radius_top_left = 1024
 corner_radius_top_right = 1024
 corner_radius_bottom_right = 1024

@@ -52,6 +52,7 @@ offset_bottom = 959.0
 
 [node name="Prewiew" type="TextureRect" parent="Panel/VBoxContainer"]
 material = SubResource("ShaderMaterial_un6ah")
+custom_minimum_size = Vector2(640, 271)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -64,6 +65,9 @@ expand_mode = 1
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.74
+theme = ExtResource("4_6005q")
+text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+autowrap_mode = 3
 
 [node name="PlayButton" type="Button" parent="Panel"]
 custom_minimum_size = Vector2(265, 92)
