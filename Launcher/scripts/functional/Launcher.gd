@@ -20,6 +20,9 @@ func import_pack():
 	var file_name = dir.get_next()
 	while file_name != "":
 		if file_name.ends_with(".mempack"):
+			# Прячем текст "Нету паков"
+			$HBC/LeftPanel/DownPanel/NoPacks.visible = false
+			# Обрабатываем паки
 			print("Обработка пака: ", file_name)
 			var pack_path = PACK_DIR + file_name
 			var file = FileAccess.open(pack_path, FileAccess.READ)

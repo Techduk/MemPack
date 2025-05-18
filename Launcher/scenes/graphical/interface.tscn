@@ -1,11 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://03jm60stu5i6"]
+[gd_scene load_steps=17 format=3 uid="uid://03jm60stu5i6"]
 
 [ext_resource type="Texture2D" uid="uid://eo8ge1h6emb5" path="res://Launcher/assets/Images/Logo.png" id="1_1gjum"]
 [ext_resource type="Script" path="res://Launcher/scripts/functional/Launcher.gd" id="1_oa7rf"]
+[ext_resource type="Texture2D" uid="uid://bkwili408umln" path="res://Launcher/assets/Images/NoPack.png" id="2_5g4kp"]
 [ext_resource type="Theme" uid="uid://d28v2fhfj0c73" path="res://Launcher/assets/Themes/MainTheme.tres" id="3_2ljhi"]
 [ext_resource type="Texture2D" uid="uid://d0ovc8gtxojl5" path="res://Launcher/assets/Images/icons/search.svg" id="4_haytc"]
 [ext_resource type="Texture2D" uid="uid://bfuokepd1avv1" path="res://Launcher/assets/Images/down.svg" id="5_40fs2"]
-[ext_resource type="PackedScene" uid="uid://bgnbv1v6a5imh" path="res://Launcher/scenes/functional/button.tscn" id="5_us1st"]
 [ext_resource type="Texture2D" uid="uid://fqyvj7h5bydn" path="res://Launcher/assets/Images/settings.svg" id="6_4m33n"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gl0rp"]
@@ -16,6 +16,10 @@ corner_radius_top_left = 20
 corner_radius_top_right = 20
 corner_radius_bottom_right = 20
 corner_radius_bottom_left = 20
+
+[sub_resource type="LabelSettings" id="LabelSettings_fucv2"]
+font_size = 100
+font_color = Color(0.152941, 0.152941, 0.152941, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f6soa"]
 bg_color = Color(0.0745098, 0.0745098, 0.0745098, 0.921569)
@@ -83,6 +87,39 @@ offset_right = 1910.0
 offset_bottom = 1070.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ed5kx")
 
+[node name="NoPacks" type="TextureRect" parent="HBC/LeftPanel/DownPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -589.5
+offset_top = -199.0
+offset_right = 589.5
+offset_bottom = 199.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_5g4kp")
+
+[node name="Label" type="Label" parent="HBC/LeftPanel/DownPanel/NoPacks"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -67.0
+offset_top = -23.0
+offset_right = 67.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_2ljhi")
+text = "Паки не найдены"
+label_settings = SubResource("LabelSettings_fucv2")
+horizontal_alignment = 1
+
 [node name="ScrollContainer" type="ScrollContainer" parent="HBC/LeftPanel/DownPanel"]
 layout_mode = 0
 offset_left = 8.0
@@ -99,10 +136,6 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 columns = 3
-
-[node name="Button" parent="HBC/LeftPanel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("5_us1st")]
-custom_minimum_size = Vector2(402, 202)
-layout_mode = 2
 
 [node name="UpPanel" type="Panel" parent="HBC/LeftPanel"]
 layout_mode = 0
