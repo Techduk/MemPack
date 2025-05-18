@@ -76,7 +76,7 @@ func import_pack():
 					button_instance.position = Vector2(50, 50)
 					if button_instance is Button:
 						button_instance.connect("pressed", Callable(self, "_on_pack_button_pressed").bind(manifest, pack_buffer))
-					$HBC/Panel/DownPanel/ScrollContainer/GridContainer.add_child(button_instance)
+					$HBC/LeftPanel/DownPanel/ScrollContainer/GridContainer.add_child(button_instance)
 					print("Кнопка добавлена в GridContainer для пака: ", manifest["name"])
 				else:
 					print("Ошибка: не найдена сцена button.tscn")
@@ -99,9 +99,9 @@ func _on_pack_button_pressed(pack_data: Dictionary, pack_buffer: PackedByteArray
 			var card_scene = load("res://Launcher/scenes/graphical/GameCard.tscn")
 			var card_instance = card_scene.instantiate()
 			card_instance.set_data(pack_data, pack_buffer)
-			$HBC.add_child(card_instance)
+			$HBC/RightPanel.add_child(card_instance)  # Добавляем в RightPanel
 			open_cards[pack_name] = card_instance
-			print("Карточка пака добавлена: ", pack_name)
+			print("Карточка пака добавлена в RightPanel: ", pack_name)
 			
 			# Подключаем сигнал для удаления карточки из словаря при закрытии
 			card_instance.connect("tree_exited", Callable(self, "_on_card_closed").bind(pack_name))

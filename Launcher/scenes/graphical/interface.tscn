@@ -1,11 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://03jm60stu5i6"]
+[gd_scene load_steps=16 format=3 uid="uid://03jm60stu5i6"]
 
 [ext_resource type="Texture2D" uid="uid://eo8ge1h6emb5" path="res://Launcher/assets/Images/Logo.png" id="1_1gjum"]
 [ext_resource type="Script" path="res://Launcher/scripts/functional/Launcher.gd" id="1_oa7rf"]
 [ext_resource type="Theme" uid="uid://d28v2fhfj0c73" path="res://Launcher/assets/Themes/MainTheme.tres" id="3_2ljhi"]
 [ext_resource type="Texture2D" uid="uid://d0ovc8gtxojl5" path="res://Launcher/assets/Images/icons/search.svg" id="4_haytc"]
-[ext_resource type="Texture2D" uid="uid://vh5sk4boidxk" path="res://Launcher/assets/Images/search.svg" id="5_5emms"]
+[ext_resource type="Texture2D" uid="uid://bfuokepd1avv1" path="res://Launcher/assets/Images/down.svg" id="5_40fs2"]
 [ext_resource type="PackedScene" uid="uid://bgnbv1v6a5imh" path="res://Launcher/scenes/functional/button.tscn" id="5_us1st"]
+[ext_resource type="Texture2D" uid="uid://fqyvj7h5bydn" path="res://Launcher/assets/Images/settings.svg" id="6_4m33n"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gl0rp"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ed5kx"]
 bg_color = Color(0.0745098, 0.0745098, 0.0745098, 0.784314)
@@ -39,7 +42,10 @@ corner_radius_top_right = 1024
 corner_radius_bottom_right = 1024
 corner_radius_bottom_left = 1024
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_okp3y"]
+
 [node name="Interface" type="Control"]
+custom_minimum_size = Vector2(1280, 1080)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -53,16 +59,23 @@ metadata/_edit_vertical_guides_ = [1910.0, 10.0, 245.0, 250.0, 280.0, 1880.0, 18
 metadata/_edit_horizontal_guides_ = [1070.0, 10.0, 180.0, 190.0, 95.0, 59.0, 131.0]
 
 [node name="HBC" type="HBoxContainer" parent="."]
-layout_mode = 0
-offset_right = 1920.0
-offset_bottom = 1080.0
+custom_minimum_size = Vector2(1280, 1080)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="HBC"]
+[node name="LeftPanel" type="Panel" parent="HBC"]
 custom_minimum_size = Vector2(1280, 1080)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_gl0rp")
 
-[node name="DownPanel" type="Panel" parent="HBC/Panel"]
+[node name="DownPanel" type="Panel" parent="HBC/LeftPanel"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 196.0
@@ -70,28 +83,28 @@ offset_right = 1910.0
 offset_bottom = 1070.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ed5kx")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBC/Panel/DownPanel"]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBC/LeftPanel/DownPanel"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = 1264.0
-offset_bottom = 557.0
+offset_bottom = 578.0
 scale = Vector2(1.5, 1.5)
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 scroll_deadzone = 1
 
-[node name="GridContainer" type="GridContainer" parent="HBC/Panel/DownPanel/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="HBC/LeftPanel/DownPanel/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 2
 columns = 3
 
-[node name="Button" parent="HBC/Panel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("5_us1st")]
+[node name="Button" parent="HBC/LeftPanel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("5_us1st")]
 custom_minimum_size = Vector2(402, 202)
 layout_mode = 2
 
-[node name="UpPanel" type="Panel" parent="HBC/Panel"]
+[node name="UpPanel" type="Panel" parent="HBC/LeftPanel"]
 layout_mode = 0
 offset_left = 249.0
 offset_top = 32.0
@@ -99,7 +112,7 @@ offset_right = 1910.0
 offset_bottom = 160.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_f6soa")
 
-[node name="LineEdit" type="LineEdit" parent="HBC/Panel/UpPanel"]
+[node name="LineEdit" type="LineEdit" parent="HBC/LeftPanel/UpPanel"]
 layout_mode = 0
 offset_left = 31.0
 offset_top = 22.0
@@ -111,29 +124,31 @@ alignment = 2
 max_length = 100
 right_icon = ExtResource("4_haytc")
 
-[node name="Tags" type="Button" parent="HBC/Panel/UpPanel"]
+[node name="Tags" type="Button" parent="HBC/LeftPanel/UpPanel"]
 layout_mode = 0
-offset_left = 1461.0
+offset_left = 1463.0
 offset_top = 23.0
-offset_right = 1541.0
-offset_bottom = 103.0
+offset_right = 2146.0
+offset_bottom = 706.0
+scale = Vector2(0.111, 0.111)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_b47kf")
 theme_override_styles/normal = SubResource("StyleBoxFlat_4ct0w")
-icon = ExtResource("4_haytc")
+icon = ExtResource("5_40fs2")
 icon_alignment = 1
 
-[node name="Settings" type="Button" parent="HBC/Panel/UpPanel"]
+[node name="Settings" type="Button" parent="HBC/LeftPanel/UpPanel"]
 layout_mode = 0
-offset_left = 1551.0
-offset_top = 23.0
-offset_right = 1631.0
-offset_bottom = 103.0
+offset_left = 1555.0
+offset_top = 27.0
+offset_right = 2238.0
+offset_bottom = 710.0
+scale = Vector2(0.105, 0.105)
 theme_override_styles/focus = SubResource("StyleBoxEmpty_3u8ri")
 theme_override_styles/normal = SubResource("StyleBoxFlat_81i80")
-icon = ExtResource("5_5emms")
+icon = ExtResource("6_4m33n")
 icon_alignment = 1
 
-[node name="Logo" type="TextureRect" parent="HBC/Panel"]
+[node name="Logo" type="TextureRect" parent="HBC/LeftPanel"]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
@@ -142,3 +157,9 @@ offset_bottom = 180.0
 pivot_offset = Vector2(0, 76)
 texture = ExtResource("1_1gjum")
 expand_mode = 1
+
+[node name="RightPanel" type="Panel" parent="HBC"]
+custom_minimum_size = Vector2(640, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_styles/panel = SubResource("StyleBoxEmpty_okp3y")

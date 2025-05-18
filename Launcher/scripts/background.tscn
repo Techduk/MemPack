@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://d06p2pwxoqwdh"]
+[gd_scene load_steps=12 format=3 uid="uid://d06p2pwxoqwdh"]
 
 [ext_resource type="Shader" path="res://Launcher/assets/Shaders/AnimatedBackground.gdshader" id="1_20qcs"]
+[ext_resource type="Script" path="res://Launcher/scripts/graphical/background.gd" id="1_db1c2"]
 [ext_resource type="Shader" path="res://Launcher/assets/Shaders/AnimatedBackgroundUpcase.gdshader" id="2_t0yy8"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_rbkdg"]
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_32e7u"]
+height = 256
 noise = SubResource("FastNoiseLite_rbkdg")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pyov6"]
@@ -47,11 +49,12 @@ gradient = SubResource("Gradient_8n2p5")
 width = 1
 
 [node name="Background" type="Node2D"]
+script = ExtResource("1_db1c2")
 
 [node name="BG" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_pyov6")
-position = Vector2(961.75, 546.75)
-scale = Vector2(7.58008, 1112.5)
+position = Vector2(4377.38, 561.875)
+scale = Vector2(34.2002, 1124.25)
 texture = SubResource("GradientTexture1D_w5sr4")
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
