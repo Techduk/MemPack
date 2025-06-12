@@ -1,0 +1,84 @@
+[gd_scene load_steps=7 format=3 uid="uid://bsc75ru41tvjr"]
+
+[ext_resource type="Theme" uid="uid://kj15a34t0y0i" path="res://Packs/TestRoom/Source/TestRoom_GlobalTheme.tres" id="1_67ncf"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/settings.gd" id="1_s8od6"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/master_volume_h_slider.gd" id="3_e48e1"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/music_volume_h_slider.gd" id="4_8b3gh"]
+[ext_resource type="AudioStream" uid="uid://dkusuugmso44g" path="res://Packs/TestRoom/Source/Sounds/Menu/service_menu_music.ogg" id="4_vlq27"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/sound_volume_h_slider.gd" id="5_vw00m"]
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1280.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s8od6")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 640.0
+offset_bottom = 1080.0
+
+[node name="MasterVolumeHSlider" type="HSlider" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 75.0
+offset_right = 630.0
+offset_bottom = 135.0
+theme = ExtResource("1_67ncf")
+max_value = 1.0
+step = 0.001
+script = ExtResource("3_e48e1")
+
+[node name="Label" type="Label" parent="Panel/MasterVolumeHSlider"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -59.0
+offset_right = 219.0
+theme = ExtResource("1_67ncf")
+text = "> Master"
+
+[node name="MusicVolumeHSlider" type="HSlider" parent="Panel"]
+offset_left = 10.0
+offset_top = 200.0
+offset_right = 630.0
+offset_bottom = 260.0
+theme = ExtResource("1_67ncf")
+max_value = 1.0
+step = 0.001
+script = ExtResource("4_8b3gh")
+
+[node name="Label" type="Label" parent="Panel/MusicVolumeHSlider"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -59.0
+offset_right = 219.0
+theme = ExtResource("1_67ncf")
+text = "> Music"
+
+[node name="SoundVolumeHSlider" type="HSlider" parent="Panel"]
+offset_left = 10.0
+offset_top = 325.0
+offset_right = 630.0
+offset_bottom = 385.0
+theme = ExtResource("1_67ncf")
+max_value = 1.0
+step = 0.001
+script = ExtResource("5_vw00m")
+
+[node name="Label" type="Label" parent="Panel/SoundVolumeHSlider"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -59.0
+offset_right = 219.0
+theme = ExtResource("1_67ncf")
+text = "> Sound"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_vlq27")
+volume_db = -10.0
+bus = &"Music"
+playback_type = 1
