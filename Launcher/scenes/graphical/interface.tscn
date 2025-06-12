@@ -63,13 +63,11 @@ metadata/_edit_vertical_guides_ = [1910.0, 10.0, 245.0, 250.0, 280.0, 1880.0, 18
 metadata/_edit_horizontal_guides_ = [1070.0, 10.0, 180.0, 190.0, 95.0, 59.0, 131.0]
 
 [node name="HBC" type="HBoxContainer" parent="."]
-custom_minimum_size = Vector2(1280, 1080)
+custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -2.0
-offset_right = 2.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -181,18 +179,17 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_81i80")
 icon = ExtResource("6_4m33n")
 icon_alignment = 1
 
-[node name="Logo" type="TextureRect" parent="HBC/LeftPanel"]
+[node name="Logo" type="TextureRect" parent="HBC/LeftPanel/UpPanel"]
 layout_mode = 0
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 244.0
-offset_bottom = 180.0
+offset_left = -239.0
+offset_top = -22.0
+offset_right = -5.0
+offset_bottom = 148.0
 pivot_offset = Vector2(0, 76)
 texture = ExtResource("1_1gjum")
 expand_mode = 1
 
 [node name="RightPanel" type="Panel" parent="HBC"]
-custom_minimum_size = Vector2(640, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_styles/panel = SubResource("StyleBoxEmpty_okp3y")

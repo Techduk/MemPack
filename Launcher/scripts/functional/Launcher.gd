@@ -114,3 +114,7 @@ func _on_pack_button_pressed(pack_data: Dictionary, pack_buffer: PackedByteArray
 func _on_card_closed(pack_name: String):
 	print("Карточка пака ", pack_name, " закрыта, удаляем из словаря")
 	open_cards.erase(pack_name)
+
+
+func _process(delta):
+	pass
