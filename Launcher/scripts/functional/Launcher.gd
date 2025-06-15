@@ -1,5 +1,6 @@
 extends Control
 
+var gamecard_showable = false
 var PACK_DIR = ""
 var open_cards: Dictionary = {}  # Хранит открытые карточки по имени пака
 
@@ -89,6 +90,8 @@ func import_pack():
 	dir.list_dir_end()
 
 func _on_pack_button_pressed(pack_data: Dictionary, pack_buffer: PackedByteArray):
+	gamecard_showable = true
+	_gamecard_trying_to_get_into_interface()
 	var pack_name = pack_data["name"]
 	print("Открытие карточки пака: ", pack_name)
 	
@@ -112,9 +115,30 @@ func _on_pack_button_pressed(pack_data: Dictionary, pack_buffer: PackedByteArray
 			print("Ошибка: не удалось загрузить сцену res://Launcher/scenes/graphical/GameCard.tscn")
 
 func _on_card_closed(pack_name: String):
+	gamecard_showable = false
+	_gamecard_trying_to_get_into_interface()
 	print("Карточка пака ", pack_name, " закрыта, удаляем из словаря")
 	open_cards.erase(pack_name)
 
+func _gamecard_trying_to_get_into_interface():
+	if gamecard_showable == true:
+		$HBC/LeftPanel/DownPanel.size.x = 1260
+		$HBC/LeftPanel/DownPanel/ScrollContainer.size.x = 830
+		$HBC/LeftPanel/UpPanel.size.x = 1021
+		$HBC/LeftPanel/UpPanel/LineEdit.size.x = 777
+		$HBC/LeftPanel/UpPanel/Tags.position.x = 833
+		$HBC/LeftPanel/UpPanel/Settings.position.x = 925
+	else:
+		$HBC/LeftPanel/DownPanel.size.x = 1900
+		$HBC/LeftPanel/DownPanel/ScrollContainer.size.x = 1256
+		$HBC/LeftPanel/UpPanel.size.x = 1661
+		$HBC/LeftPanel/UpPanel/LineEdit.size.x = 1410
+		$HBC/LeftPanel/UpPanel/Tags.position.x = 1463
+		$HBC/LeftPanel/UpPanel/Settings.position.x = 1555
 
 func _process(delta):
 	pass
+
+# Тестируем загрузку и быстрый переход в игру
+func _TEST_BUTTON_CHECK():
+	get_tree().change_scene_to_file("res://Packs/TestRoom/Menu/Main.tscn")

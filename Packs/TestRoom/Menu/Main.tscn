@@ -1,52 +1,59 @@
-[gd_scene load_steps=11 format=3 uid="uid://cu4xkxi0a5pv"]
+[gd_scene load_steps=10 format=3 uid="uid://cu4xkxi0a5pv"]
 
-[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/main.gd" id="1_bjhc3"]
-[ext_resource type="Shader" path="res://Packs/TestRoom/Source/Shaders/MenuBackgroundAnimation.gdshader" id="2_dxvum"]
-[ext_resource type="Texture2D" uid="uid://cevp2o1dak23n" path="res://Packs/TestRoom/Source/Images/MainLogo.png" id="3_ghcs1"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/MainScript.gd" id="1_yq21p"]
+[ext_resource type="Shader" path="res://Packs/TestRoom/Source/Shaders/Waving.gdshader" id="2_fnc1o"]
 [ext_resource type="AudioStream" uid="uid://dkusuugmso44g" path="res://Packs/TestRoom/Source/Sounds/Menu/service_menu_music.ogg" id="4_i1ug8"]
-[ext_resource type="PackedScene" uid="uid://bsc75ru41tvjr" path="res://Packs/TestRoom/Menu/settings.tscn" id="5_ul3l7"]
-[ext_resource type="Theme" uid="uid://kj15a34t0y0i" path="res://Packs/TestRoom/Source/TestRoom_GlobalTheme.tres" id="6_y71qs"]
+[ext_resource type="PackedScene" uid="uid://drrtfkqketnsa" path="res://Packs/TestRoom/Menu/menu_gui.tscn" id="5_glk4q"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bbqsb"]
-shader = ExtResource("2_dxvum")
-shader_parameter/base_displacement = Vector2(0, 0)
-shader_parameter/repetion_x = 4.0
-shader_parameter/scale_x = 2.0
-shader_parameter/speed_x = 1.0
-shader_parameter/color_count = 0
-shader_parameter/fps = 0.0
-shader_parameter/frame_count = 0
+shader = ExtResource("2_fnc1o")
 
 [sub_resource type="Gradient" id="Gradient_qxgu3"]
 interpolation_mode = 2
 interpolation_color_space = 2
-offsets = PackedFloat32Array(0.363636, 0.627273, 1)
-colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_v26y1"]
 gradient = SubResource("Gradient_qxgu3")
 width = 16
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mw5vw"]
+[sub_resource type="Curve" id="Curve_tuf0b"]
+min_value = -1024.0
+max_value = 205.8
+_data = [Vector2(0, -1024), 0.0, 0.0, 0, 0]
+point_count = 1
+
+[sub_resource type="CurveTexture" id="CurveTexture_5hb73"]
+width = 32
+curve = SubResource("Curve_tuf0b")
 
 [node name="Main" type="Node"]
-script = ExtResource("1_bjhc3")
+script = ExtResource("1_yq21p")
 
 [node name="Background" type="Sprite2D" parent="."]
 texture_filter = 1
 texture_repeat = 1
 material = SubResource("ShaderMaterial_bbqsb")
-position = Vector2(960, 540)
-scale = Vector2(120, 1080)
+position = Vector2(2261, 540)
+scale = Vector2(282.5, 1076)
 texture = SubResource("GradientTexture1D_v26y1")
 
-[node name="Logo" type="TextureRect" parent="."]
-offset_left = 1381.0
-offset_top = 47.0
-offset_right = 1815.0
-offset_bottom = 395.0
-texture = ExtResource("3_ghcs1")
-expand_mode = 1
+[node name="FrontBackground" type="Sprite2D" parent="Background"]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(-0.114389, 0.726348)
+rotation = 0.0174533
+scale = Vector2(0.518213, 0.523791)
+texture = SubResource("CurveTexture_5hb73")
+
+[node name="FrontBackground2" type="Sprite2D" parent="Background"]
+texture_filter = 1
+texture_repeat = 1
+position = Vector2(-0.033453, -0.68012)
+rotation = 0.0174533
+scale = Vector2(0.521967, 0.747775)
+skew = -0.000328064
+texture = SubResource("CurveTexture_5hb73")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_i1ug8")
@@ -54,50 +61,4 @@ autoplay = true
 bus = &"Music"
 playback_type = 1
 
-[node name="Settings" parent="." instance=ExtResource("5_ul3l7")]
-offset_left = 1920.0
-offset_right = 640.0
-
-[node name="Menu" type="Panel" parent="."]
-offset_left = 2.0
-offset_right = 597.0
-offset_bottom = 1079.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_mw5vw")
-
-[node name="Play" type="Button" parent="Menu"]
-layout_mode = 0
-offset_left = 23.0
-offset_top = 742.0
-offset_right = 573.0
-offset_bottom = 832.0
-theme = ExtResource("6_y71qs")
-text = "| play"
-alignment = 0
-
-[node name="Settings" type="Button" parent="Menu"]
-layout_mode = 0
-offset_left = 23.0
-offset_top = 837.0
-offset_right = 573.0
-offset_bottom = 927.0
-theme = ExtResource("6_y71qs")
-text = "| Settings"
-alignment = 0
-
-[node name="Exit" type="Button" parent="Menu"]
-layout_mode = 0
-offset_left = 23.0
-offset_top = 932.0
-offset_right = 573.0
-offset_bottom = 1022.0
-theme = ExtResource("6_y71qs")
-text = "| Exit"
-alignment = 0
-
-[connection signal="mouse_entered" from="Menu/Play" to="." method="_on_PB_mouse_entered"]
-[connection signal="mouse_exited" from="Menu/Play" to="." method="_on_PB_mouse_exited"]
-[connection signal="mouse_entered" from="Menu/Settings" to="." method="_on_SB_mouse_entered"]
-[connection signal="mouse_exited" from="Menu/Settings" to="." method="_on_SB_mouse_exited"]
-[connection signal="pressed" from="Menu/Settings" to="." method="_on_settings_pressed"]
-[connection signal="mouse_entered" from="Menu/Exit" to="." method="_on_EB_mouse_entered"]
-[connection signal="mouse_exited" from="Menu/Exit" to="." method="_on_EB_mouse_exited"]
+[node name="MenuGui" parent="." instance=ExtResource("5_glk4q")]

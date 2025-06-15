@@ -1,6 +1,8 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://kj15a34t0y0i"]
+[gd_resource type="Theme" load_steps=13 format=3 uid="uid://kj15a34t0y0i"]
 
 [ext_resource type="FontFile" uid="uid://coaiykqgdlk22" path="res://Packs/TestRoom/Source/Fonts/KomUni.otf" id="1_mwlow"]
+[ext_resource type="Texture2D" uid="uid://c2sihuwdn1rkl" path="res://Packs/TestRoom/Source/Images/FullCheckBox.png" id="2_w7qky"]
+[ext_resource type="Texture2D" uid="uid://co61mxako5nyx" path="res://Packs/TestRoom/Source/Images/CheckBox.png" id="3_0ttoa"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_myliy"]
 
@@ -13,6 +15,7 @@ corner_radius_bottom_left = 25
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inqow"]
 bg_color = Color(0, 0, 0, 1)
+border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 25
 corner_radius_top_right = 5
 corner_radius_bottom_right = 50
@@ -25,7 +28,58 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 50
 corner_radius_bottom_left = 25
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mc7f3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_43y1m"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w7xsk"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lchmj"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nq5d8"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [resource]
+default_font_size = 0
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(0, 0, 0, 1)
 Button/colors/font_pressed_color = Color(0.0755101, 0.0755101, 0.0755101, 1)
@@ -35,5 +89,17 @@ Button/styles/focus = SubResource("StyleBoxEmpty_myliy")
 Button/styles/hover = SubResource("StyleBoxFlat_0tfky")
 Button/styles/normal = SubResource("StyleBoxFlat_inqow")
 Button/styles/pressed = SubResource("StyleBoxFlat_go1ye")
+CheckButton/colors/font_color = Color(1, 1, 1, 1)
+CheckButton/colors/font_hover_color = Color(0.847059, 0.847059, 0.847059, 1)
+CheckButton/colors/font_hover_pressed_color = Color(0.847059, 0.847059, 0.847059, 1)
+CheckButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+CheckButton/icons/checked = ExtResource("2_w7qky")
+CheckButton/icons/checked_mirrored = ExtResource("2_w7qky")
+CheckButton/icons/unchecked = ExtResource("3_0ttoa")
+CheckButton/styles/focus = SubResource("StyleBoxEmpty_mc7f3")
+CheckButton/styles/hover = SubResource("StyleBoxFlat_43y1m")
+CheckButton/styles/hover_pressed = SubResource("StyleBoxFlat_w7xsk")
+CheckButton/styles/normal = SubResource("StyleBoxFlat_lchmj")
+CheckButton/styles/pressed = SubResource("StyleBoxFlat_nq5d8")
 Label/font_sizes/font_size = 48
 Label/fonts/font = ExtResource("1_mwlow")

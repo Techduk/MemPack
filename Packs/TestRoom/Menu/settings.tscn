@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bsc75ru41tvjr"]
+[gd_scene load_steps=9 format=3 uid="uid://bsc75ru41tvjr"]
 
 [ext_resource type="Theme" uid="uid://kj15a34t0y0i" path="res://Packs/TestRoom/Source/TestRoom_GlobalTheme.tres" id="1_67ncf"]
 [ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/settings.gd" id="1_s8od6"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/music_volume_h_slider.gd" id="4_8b3gh"]
 [ext_resource type="AudioStream" uid="uid://dkusuugmso44g" path="res://Packs/TestRoom/Source/Sounds/Menu/service_menu_music.ogg" id="4_vlq27"]
 [ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/sound_volume_h_slider.gd" id="5_vw00m"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/voice_volume_h_slider.gd" id="6_3woet"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/effect_volume_h_slider.gd" id="7_1v8id"]
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -42,6 +44,7 @@ theme = ExtResource("1_67ncf")
 text = "> Master"
 
 [node name="MusicVolumeHSlider" type="HSlider" parent="Panel"]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 200.0
 offset_right = 630.0
@@ -60,6 +63,7 @@ theme = ExtResource("1_67ncf")
 text = "> Music"
 
 [node name="SoundVolumeHSlider" type="HSlider" parent="Panel"]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 325.0
 offset_right = 630.0
@@ -75,10 +79,79 @@ offset_left = 1.0
 offset_top = -59.0
 offset_right = 219.0
 theme = ExtResource("1_67ncf")
-text = "> Sound"
+text = "> Sounds"
+
+[node name="VoiceVolumeHSlider" type="HSlider" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 435.0
+offset_right = 630.0
+offset_bottom = 495.0
+theme = ExtResource("1_67ncf")
+max_value = 1.0
+step = 0.001
+script = ExtResource("6_3woet")
+
+[node name="Label" type="Label" parent="Panel/VoiceVolumeHSlider"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -59.0
+offset_right = 219.0
+theme = ExtResource("1_67ncf")
+text = "> Voices"
+
+[node name="EffectVolumeHSlider" type="HSlider" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 545.0
+offset_right = 630.0
+offset_bottom = 605.0
+theme = ExtResource("1_67ncf")
+max_value = 1.0
+step = 0.001
+script = ExtResource("7_1v8id")
+
+[node name="Label" type="Label" parent="Panel/EffectVolumeHSlider"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = -59.0
+offset_right = 219.0
+theme = ExtResource("1_67ncf")
+text = "> Effects"
+
+[node name="VSync" type="CheckButton" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 614.0
+offset_right = 629.0
+offset_bottom = 686.0
+theme = ExtResource("1_67ncf")
+text = "Vsync"
+
+[node name="FullScreen" type="CheckButton" parent="Panel"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 704.0
+offset_right = 629.0
+offset_bottom = 778.0
+theme = ExtResource("1_67ncf")
+button_pressed = true
+text = "Fullscreen"
+
+[node name="ScreenSize" type="OptionButton" parent="Panel"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 788.0
+offset_right = 629.0
+offset_bottom = 862.0
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_vlq27")
 volume_db = -10.0
 bus = &"Music"
 playback_type = 1
+
+[connection signal="toggled" from="Panel/VSync" to="." method="_on_v_sync_toggled_off"]
+[connection signal="toggled" from="Panel/VSync" to="." method="_on_v_sync_toggled"]
+[connection signal="pressed" from="Panel/FullScreen" to="." method="_on_full_screen_pressed"]
+[connection signal="item_selected" from="Panel/ScreenSize" to="." method="_on_screen_size_item_selected"]

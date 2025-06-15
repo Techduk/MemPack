@@ -1,5 +1,14 @@
 extends Node
+
 var settings_opened = false
+
+const BASE_WIDTH = 1920.00
+const BASE_HEIGHT = 1080.0
+const BASE_ASPECT = BASE_WIDTH / BASE_HEIGHT  # 1.777 (16:9)
+
+func _ready():
+	pass
+
 
 # Play button
 func _on_PB_mouse_entered():
@@ -52,4 +61,4 @@ func _on_exit_pressed():
 
 
 func _process(delta):
-	pass
+	$Logo.position.x = DisplayServer.screen_get_size().x - 539

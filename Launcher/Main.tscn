@@ -14,7 +14,7 @@ func _ready():
 	# Устанавливаем начальное состояние окна
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 	DisplayServer.window_set_size(Vector2i(1280, 720))
-	get_window().min_size = Vector2(520, 480)
+	get_window().min_size = Vector2(640, 480)
 	var screen_size = DisplayServer.screen_get_size()
 	var window_size = Vector2i(1280, 720)
 	DisplayServer.window_set_position((screen_size - window_size) / 2)
@@ -47,6 +47,7 @@ func toggle_fullscreen():
 script = SubResource("GDScript_ofcyg")
 
 [node name="Background" parent="." instance=ExtResource("1_3cc3b")]
+script = null
 
 [node name="Interface" parent="." instance=ExtResource("3_y2ngr")]
 anchors_preset = 8

@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=3 uid="uid://drrtfkqketnsa"]
+
+[ext_resource type="Texture2D" uid="uid://cevp2o1dak23n" path="res://Packs/TestRoom/Source/Images/MainLogo.png" id="1_4lwjs"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/mainmenu.gd" id="1_egm5u"]
+[ext_resource type="Theme" uid="uid://kj15a34t0y0i" path="res://Packs/TestRoom/Source/TestRoom_GlobalTheme.tres" id="3_7rr5y"]
+[ext_resource type="PackedScene" uid="uid://bsc75ru41tvjr" path="res://Packs/TestRoom/Menu/settings.tscn" id="4_8crhc"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jrend"]
+
+[node name="MenuGui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_egm5u")
+
+[node name="Logo" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 1381.0
+offset_top = 47.0
+offset_right = 1815.0
+offset_bottom = 395.0
+texture = ExtResource("1_4lwjs")
+expand_mode = 1
+
+[node name="Menu" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_right = 597.0
+offset_bottom = 1079.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jrend")
+
+[node name="Play" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 742.0
+offset_right = 573.0
+offset_bottom = 832.0
+theme = ExtResource("3_7rr5y")
+text = " | play"
+alignment = 0
+
+[node name="Settings" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 837.0
+offset_right = 573.0
+offset_bottom = 927.0
+theme = ExtResource("3_7rr5y")
+text = " | Settings"
+alignment = 0
+
+[node name="Exit" type="Button" parent="Menu"]
+layout_mode = 0
+offset_left = 23.0
+offset_top = 932.0
+offset_right = 573.0
+offset_bottom = 1022.0
+theme = ExtResource("3_7rr5y")
+text = " | Exit"
+alignment = 0
+
+[node name="Settings" parent="." instance=ExtResource("4_8crhc")]
+layout_mode = 1
+offset_left = 1920.0
+offset_right = 640.0
+
+[connection signal="mouse_entered" from="Menu/Play" to="." method="_on_PB_mouse_entered"]
+[connection signal="mouse_exited" from="Menu/Play" to="." method="_on_PB_mouse_exited"]
+[connection signal="mouse_entered" from="Menu/Settings" to="." method="_on_SB_mouse_entered"]
+[connection signal="mouse_exited" from="Menu/Settings" to="." method="_on_SB_mouse_exited"]
+[connection signal="pressed" from="Menu/Settings" to="." method="_on_settings_pressed"]
+[connection signal="mouse_entered" from="Menu/Exit" to="." method="_on_EB_mouse_entered"]
+[connection signal="mouse_exited" from="Menu/Exit" to="." method="_on_EB_mouse_exited"]
+[connection signal="pressed" from="Menu/Exit" to="." method="_on_exit_pressed"]

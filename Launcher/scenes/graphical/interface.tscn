@@ -1,10 +1,11 @@
-[gd_scene load_steps=17 format=3 uid="uid://03jm60stu5i6"]
+[gd_scene load_steps=18 format=3 uid="uid://03jm60stu5i6"]
 
 [ext_resource type="Texture2D" uid="uid://eo8ge1h6emb5" path="res://Launcher/assets/Images/Logo.png" id="1_1gjum"]
 [ext_resource type="Script" path="res://Launcher/scripts/functional/Launcher.gd" id="1_oa7rf"]
 [ext_resource type="Texture2D" uid="uid://bkwili408umln" path="res://Launcher/assets/Images/NoPack.png" id="2_5g4kp"]
 [ext_resource type="Theme" uid="uid://d28v2fhfj0c73" path="res://Launcher/assets/Themes/MainTheme.tres" id="3_2ljhi"]
 [ext_resource type="Texture2D" uid="uid://d0ovc8gtxojl5" path="res://Launcher/assets/Images/icons/search.svg" id="4_haytc"]
+[ext_resource type="PackedScene" uid="uid://bgnbv1v6a5imh" path="res://Launcher/scenes/functional/button.tscn" id="4_q7dli"]
 [ext_resource type="Texture2D" uid="uid://bfuokepd1avv1" path="res://Launcher/assets/Images/down.svg" id="5_40fs2"]
 [ext_resource type="Texture2D" uid="uid://fqyvj7h5bydn" path="res://Launcher/assets/Images/settings.svg" id="6_4m33n"]
 
@@ -66,10 +67,8 @@ metadata/_edit_horizontal_guides_ = [1070.0, 10.0, 180.0, 190.0, 95.0, 59.0, 131
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="LeftPanel" type="Panel" parent="HBC"]
 custom_minimum_size = Vector2(1280, 1080)
@@ -135,6 +134,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 2
 columns = 3
 
+[node name="Button" parent="HBC/LeftPanel/DownPanel/ScrollContainer/GridContainer" instance=ExtResource("4_q7dli")]
+layout_mode = 2
+
 [node name="UpPanel" type="Panel" parent="HBC/LeftPanel"]
 layout_mode = 0
 offset_left = 249.0
@@ -191,5 +193,7 @@ expand_mode = 1
 
 [node name="RightPanel" type="Panel" parent="HBC"]
 layout_mode = 2
-size_flags_horizontal = 10
+size_flags_horizontal = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_okp3y")
+
+[connection signal="pressed" from="HBC/LeftPanel/DownPanel/ScrollContainer/GridContainer/Button" to="." method="_TEST_BUTTON_CHECK"]
