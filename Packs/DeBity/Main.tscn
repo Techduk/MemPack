@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://cabrddi1lr3cp"]
 
-[ext_resource type="PackedScene" uid="uid://waxjt805ix24" path="res://Packs/DeBity/Server.tscn" id="1_snw5s"]
+[ext_resource type="PackedScene" uid="uid://waxjt805ix24" path="res://ServerCore/Server.tscn" id="1_snw5s"]
 [ext_resource type="Texture2D" uid="uid://cjnlwmd1jq2n1" path="res://Packs/DeBity/oh.png" id="2_1alqp"]
 [ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Launcher/assets/Fonts/Pusia Bold.otf" id="3_5shko"]
 

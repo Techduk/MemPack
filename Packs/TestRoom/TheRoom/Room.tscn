@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://dsaxehowmwpo2"]
+
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/Room/room.gd" id="1_tqxkp"]
+[ext_resource type="FontFile" uid="uid://b8khqqecrjtxb" path="res://Launcher/assets/Fonts/Pusia Bold.otf" id="2_juv83"]
+
+[node name="Room" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tqxkp")
+
+[node name="RoomLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 30.0
+offset_right = 551.0
+offset_bottom = 166.0
+theme_override_fonts/font = ExtResource("2_juv83")
+theme_override_font_sizes/font_size = 48
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayersContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 45.0
+offset_top = 240.0
+offset_right = 878.0
+offset_bottom = 741.0
+alignment = 2

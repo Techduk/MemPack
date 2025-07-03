@@ -20,6 +20,7 @@ function generateRoomCode() {
 
 // Главная страница с формой
 app.get("/", (req, res) => {
+    const roomCode = req.query.roomCode || ""; // Получаем roomCode из URL-параметра
     res.send(`
         <!DOCTYPE html>
         <html>
@@ -40,7 +41,7 @@ app.get("/", (req, res) => {
                 <h1>Game Chat Server</h1>
                 <p>Enter room code and nickname to join the chat.</p>
                 <form id="joinForm" onsubmit="joinChat(event)">
-                    <input type="text" id="roomCode" placeholder="Room Code (e.g., JFPr06)" maxlength="6" required>
+                    <input type="text" id="roomCode" value="${roomCode}" placeholder="Room Code (e.g., JFPr06)" maxlength="6" required>
                     <div id="roomCodeError" class="error">Room code must be 6 characters long.</div>
                     <input type="text" id="nickname" placeholder="Nickname" maxlength="9" required>
                     <div id="nicknameError" class="error">Nickname must be 1-9 characters long.</div>
@@ -103,6 +104,11 @@ app.get("/join/:roomCode", (req, res) => {
                 let username = localStorage.getItem('nickname') || 'Unknown';
                 console.log("Username initialized: " + username);
                 const ws = new WebSocket("wss://" + window.location.host + "/ws/${roomCode}");
+
+                // Проверка ника и перенаправление, если его нет
+                if (!username || username === 'Unknown') {
+                    window.location.href = '/?roomCode=${roomCode}';
+                }
 
                 ws.onopen = () => {
                     console.log("WebSocket connected");

@@ -144,6 +144,7 @@ offset_left = 11.0
 offset_top = 788.0
 offset_right = 629.0
 offset_bottom = 862.0
+theme = ExtResource("1_67ncf")
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_vlq27")
