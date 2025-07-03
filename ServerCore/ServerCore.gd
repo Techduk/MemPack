@@ -10,6 +10,7 @@ var ws_connected := false
 var connection_attempts := 0
 const MAX_ATTEMPTS := 6
 const RECONNECT_DELAY := 2.0
+var player_id : String
 
 # --- Секция сигналов ---
 signal room_created(room_code: String, join_link: String)
@@ -23,24 +24,48 @@ var room_state = {} # { room_code: { players: [{name: String, score: int}] } }
 # --- Инициализация ---
 func _ready():
 	_generate_unique_session_id()
+	# Генерация уникального ID для игрока
+	var file = FileAccess.open("user://player_id.txt", FileAccess.READ)
+	if file:
+		player_id = file.get_as_text()
+		file.close()
+	if not player_id:
+		player_id = generate_unique_id()
+		file = FileAccess.open("user://player_id.txt", FileAccess.WRITE)
+		file.store_string(player_id)
+		file.close()
+	print("Player ID: " + player_id)
+
+func generate_unique_id():
+	var uuid = ""
+	for i in range(36):
+		if i == 8 or i == 13 or i == 18 or i == 23:
+			uuid += "-"
+		elif i == 14:
+			uuid += "4"
+		else:
+			var hex_value = "%x" % (randi() % 16)
+			uuid += hex_value
+	return uuid
 
 # --- Обработка WebSocket ---
 func _process(_delta):
 	ws.poll()
 	var state = ws.get_ready_state()
 	
-	if state == WebSocketPeer.STATE_OPEN and not ws_connected:
-		print("WebSocket-соединение открыто, отправляем запрос на создание комнаты")
-		send_request({ "type": "create" })
-		if room_state.has(session_id) and room_state[session_id].size() > 0:
-			send_request({ "type": "restore", "room": session_id, "state": room_state[session_id] })
-		ws_connected = true
-		connection_attempts = 0
+	if state == WebSocketPeer.STATE_OPEN:
+		if not ws_connected:
+			print("WebSocket-соединение открыто, отправляем запрос на создание комнаты")
+			send_request({ "type": "create", "id": player_id })
+			if room_state.has(session_id) and room_state[session_id].size() > 0:
+				send_request({ "type": "restore", "room": session_id, "state": room_state[session_id], "id": player_id })
+			ws_connected = true
+			connection_attempts = 0
 	elif state == WebSocketPeer.STATE_CLOSING:
-		print("WebSocket закрывается...")
+		print("WebSocket закрывается, код закрытия: ", ws.get_close_code(), ", причина: ", ws.get_close_reason())
 	elif state == WebSocketPeer.STATE_CLOSED:
 		if ws_connected:
-			print("WebSocket закрыт")
+			print("WebSocket закрыт, код закрытия: ", ws.get_close_code(), ", причина: ", ws.get_close_reason())
 			ws_connected = false
 			emit_signal("error_occurred", "Соединение с сервером потеряно.")
 			_reconnect()
@@ -48,7 +73,7 @@ func _process(_delta):
 	while ws.get_available_packet_count() > 0:
 		var packet = ws.get_packet()
 		var message = packet.get_string_from_utf8()
-		print("Получен пакет: ", message)
+		print("Получен необработанный пакет: ", message)
 		var error = json.parse(message)
 		if error == OK:
 			var data = json.get_data()
@@ -99,6 +124,10 @@ func _handle_message(data: Dictionary):
 		room_state[session_id].append({"name": data["name"], "score": 0})
 		emit_signal("player_joined", session_id, data["name"])
 		_broadcast(session_id, { "type": "join", "name": data["name"], "text": data["text"] })
+	elif data["type"] == "ping":
+		print("Получен пинг от сервера")
+		send_request({ "type": "pong", "id": player_id })
+		print("Отправлен pong с id: ", player_id)
 	elif data["type"] == "error":
 		print("Ошибка сервера: ", data["text"])
 		if data["text"].contains("Room already exists"):
