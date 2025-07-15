@@ -36,12 +36,12 @@ func _on_SB_mouse_exited():
 func _on_settings_pressed():
 	var tween = create_tween().set_parallel(true)
 	if settings_opened == false:
-		#tween.tween_property($Settings, "position", Vector2(1280, 0), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-		#tween.tween_property($Logo, "position", Vector2(105, 47), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		tween.tween_property($Settings, "position", Vector2(1280, 0), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		tween.tween_property($Logo, "position", Vector2(105, 47), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 		settings_opened = true
 	else:
-		#tween.tween_property($Settings, "position", Vector2(1920, 0), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
-		#tween.tween_property($Logo, "position", Vector2(1381, 47), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		tween.tween_property($Settings, "position", Vector2(1920, 0), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
+		tween.tween_property($Logo, "position", Vector2(1381, 47), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 		settings_opened = false
 
 # Exit button
