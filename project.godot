@@ -33,6 +33,10 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="keep_height"
 window/vsync/vsync_mode=0
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/qr_code/plugin.cfg")
+
 [input]
 
 FullScreen={

@@ -3,11 +3,11 @@ shader_type canvas_item;
 uniform vec2 base_displacement = vec2(0.0, 0.0); //Base movement
 uniform float repetion_x = 0.0; //The sine wave repetition
 uniform float scale_x = 0.0; //The displacement on the x axes scale,
-uniform float speed_x = 0.0; //The speed of the movement, 
+uniform float speed_x = 0.0; //The speed of the movement,
 
 
 uniform int color_count; //The amount of colors in the texture
-uniform sampler2D pallet; //The pallet whit dimensions (color_count)x(frame_count) pixels 
+uniform sampler2D pallet; //The pallet whit dimensions (color_count)x(frame_count) pixels
 uniform float fps; //The fps of the animations
 uniform int frame_count; //The number of frames of the pallet for te animation
 

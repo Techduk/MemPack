@@ -5,7 +5,7 @@ var ws = WebSocketPeer.new()
 var rooms = {}
 var json = JSON.new()
 var session_id: String
-const CLOUD_SERVER = "wss://d157c5fe-adbb-4070-904d-12484e03e36b-00-1rf82vx1m48hg.spock.replit.dev"
+const CLOUD_SERVER = "wss://www.mempack.fun"
 var ws_connected := false
 var connection_attempts := 0
 const MAX_ATTEMPTS := 6

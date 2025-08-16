@@ -21,7 +21,9 @@ func _ready():
 		print("Ошибка: Сигнал player_joined НЕ подключён")
 
 func _on_room_created(room_code: String, join_link: String):
-	room_label.text = "Код комнаты: %s\nСсылка: %s" % [room_code, join_link]
+	room_label.text = "Код комнаты: %s" % [room_code]
+	$QRCodeRect.data = join_link
+	
 	print("Отображено: ", room_label.text)
 
 func _on_player_joined(_room: String, player_name: String):
