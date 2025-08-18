@@ -8,6 +8,8 @@ extends Control
 var player_nodes = {}
 
 func _ready():
+	
+	ServerCore.start_server()
 	ServerCore.room_created.connect(_on_room_created)
 	ServerCore.player_joined.connect(_on_player_joined)
 	ServerCore.player_disconnected.connect(_on_player_disconnected)
@@ -23,6 +25,9 @@ func _ready():
 func _on_room_created(room_code: String, join_link: String):
 	room_label.text = "Код комнаты: %s" % [room_code]
 	$QRCodeRect.data = join_link
+	$QRCodeRect.visible = true
+	
+	$Connecting.visible = false
 	
 	print("Отображено: ", room_label.text)
 

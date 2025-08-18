@@ -78,6 +78,7 @@ grow_horizontal = 1
 
 [connection signal="mouse_entered" from="Menu/Play" to="." method="_on_PB_mouse_entered"]
 [connection signal="mouse_exited" from="Menu/Play" to="." method="_on_PB_mouse_exited"]
+[connection signal="pressed" from="Menu/Play" to="." method="_on_play_pressed"]
 [connection signal="mouse_entered" from="Menu/Settings" to="." method="_on_SB_mouse_entered"]
 [connection signal="mouse_exited" from="Menu/Settings" to="." method="_on_SB_mouse_exited"]
 [connection signal="pressed" from="Menu/Settings" to="." method="_on_settings_pressed"]

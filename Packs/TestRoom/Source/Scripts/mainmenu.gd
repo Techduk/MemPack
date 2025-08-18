@@ -21,6 +21,8 @@ func _on_PB_mouse_exited():
 	tween.tween_property($Menu/Play, "position", Vector2(23, 742), 0.3).set_trans(Tween.TRANS_QUART).set_ease(Tween.EASE_OUT)
 	$Menu/Play.text = " | Play"
 
+func _on_play_pressed():
+	get_tree().change_scene_to_file("res://Packs/TestRoom/TheRoom/Room.tscn")
 
 # Settings button
 func _on_SB_mouse_entered():

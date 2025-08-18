@@ -22,7 +22,7 @@ signal error_occurred(error: String)
 var room_state = {} # { room_code: { players: [{name: String, score: int}] } }
 
 # --- Инициализация ---
-func _ready():
+func start_server():
 	_generate_unique_session_id()
 	# Генерация уникального ID для игрока
 	var file = FileAccess.open("user://player_id.txt", FileAccess.READ)
