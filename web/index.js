@@ -76,9 +76,9 @@ app.get("/", (req, res) => {
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Game Chat Server</title>
+            <title>Mempack</title>
             <style>
-                body { font-family: Arial, sans-serif; background-color: #fffacd; padding: 20px; }
+                body { font-family: Arial, sans-serif; background-color: #131313; padding: 20px; }
                 .form-container { max-width: 400px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
                 input, button { width: 100%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
                 button { background-color: #4CAF50; color: white; border: none; cursor: pointer; }
@@ -88,14 +88,14 @@ app.get("/", (req, res) => {
         </head>
         <body>
             <div class="form-container">
-                <h1>Game Chat Server</h1>
-                <p>Enter room code and nickname to join the chat.</p>
+                <h1>Присоединится к комнате</h1>
+                <p>Введите код комнаты и ник для игры!</p>
                 <form id="joinForm" onsubmit="joinChat(event)">
-                    <input type="text" id="roomCode" value="${roomCode}" placeholder="Room Code (e.g., JFPr06)" maxlength="6" required>
-                    <div id="roomCodeError" class="error">Room code must be 6 characters long.</div>
-                    <input type="text" id="nickname" placeholder="Nickname" maxlength="9" required>
-                    <div id="nicknameError" class="error">Nickname must be 1-9 characters long.</div>
-                    <button type="submit">Join Chat</button>
+                    <input type="text" id="roomCode" value="${roomCode}" placeholder="JFPr06" maxlength="6" required>
+                    <div id="roomCodeError" class="error">Код комнаты состоит из 6-ти символов.</div>
+                    <input type="text" id="nickname" placeholder="Певец227" maxlength="9" required>
+                    <div id="nicknameError" class="error">Необходим ник для игры.</div>
+                    <button type="submit">Присоединится</button>
                 </form>
             </div>
             <script>
@@ -149,9 +149,9 @@ app.get("/join/:roomCode", (req, res) => {
         <html>
         <head>
             <meta charset="UTF-8">
-            <title>Game Chat - Room ${roomCode}</title>
+            <title>Mempack</title>
             <style>
-                body { font-family: Arial, sans-serif; padding: 20px; background-color: #fffacd; }
+                body { font-family: Arial, sans-serif; padding: 20px; background-color: #131313; }
                 #chat { height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; background: #fff; }
                 input { width: 70%; padding: 10px; margin: 10px 0; box-sizing: border-box; }
                 button { padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
@@ -248,10 +248,10 @@ app.get("/join/:roomCode", (req, res) => {
             </script>
         </head>
         <body>
-            <h1>Chat - Room ${roomCode}</h1>
+            <h1 id="chat">Хах, это лобби!</h1>
             <div id="chat"></div>
-            <input type="text" id="message" placeholder="Type message..." maxlength="999">
-            <button onclick="sendMessage()">Send</button>
+            <input type="text" id="message" placeholder="Написать сообщение..." maxlength="999">
+            <button onclick="sendMessage()">Отправить</button>
         </body>
         </html>
     `);
