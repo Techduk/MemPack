@@ -1,0 +1,90 @@
+[gd_scene load_steps=8 format=3 uid="uid://qdyw4ksh5qem"]
+
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/PlayerItem.gd" id="1_8bn4l"]
+[ext_resource type="Texture2D" uid="uid://cg08n2nxva8n2" path="res://Packs/TestRoom/Source/Images/Player_icons/Triagle.png" id="1_qfcfs"]
+[ext_resource type="Theme" uid="uid://kj15a34t0y0i" path="res://Packs/TestRoom/Source/TestRoom_GlobalTheme.tres" id="2_j6t8g"]
+[ext_resource type="FontFile" uid="uid://coaiykqgdlk22" path="res://Packs/TestRoom/Source/Fonts/KomUni.otf" id="3_utlfe"]
+[ext_resource type="Texture2D" uid="uid://wlh0tllfb342" path="res://iconColorful.svg" id="4_h1ovc"]
+[ext_resource type="Texture2D" uid="uid://cjnlwmd1jq2n1" path="res://Packs/CrashTest/oh.png" id="5_gnn65"]
+[ext_resource type="Texture2D" uid="uid://co61mxako5nyx" path="res://Packs/TestRoom/Source/Images/CheckBox.png" id="7_kegxc"]
+
+[node name="PlayerItem" type="Control"]
+custom_minimum_size = Vector2(0, 105)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 137.0
+offset_top = 298.0
+offset_right = -1450.0
+offset_bottom = -677.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_8bn4l")
+
+[node name="PlayerIcon" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+pivot_offset = Vector2(50, 50)
+texture = ExtResource("1_qfcfs")
+expand_mode = 1
+
+[node name="PlayerName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 113.0
+offset_right = 196.0
+offset_bottom = 100.0
+theme = ExtResource("2_j6t8g")
+text = "11111"
+horizontal_alignment = 3
+vertical_alignment = 1
+
+[node name="ActionPanel" type="Panel" parent="."]
+layout_mode = 1
+offset_top = -180.0
+offset_right = 333.0
+pivot_offset = Vector2(0, 180)
+
+[node name="KickButton" type="Button" parent="ActionPanel"]
+layout_mode = 1
+offset_right = 333.0
+offset_bottom = 60.0
+theme_override_constants/icon_max_width = 50
+theme_override_fonts/font = ExtResource("3_utlfe")
+theme_override_font_sizes/font_size = 32
+text = "Выгнать"
+icon = ExtResource("5_gnn65")
+
+[node name="FreezeButton" type="Button" parent="ActionPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -30.0
+offset_right = 333.0
+offset_bottom = 30.0
+grow_vertical = 2
+theme_override_constants/icon_max_width = 50
+theme_override_fonts/font = ExtResource("3_utlfe")
+theme_override_font_sizes/font_size = 32
+text = "Заморозить"
+icon = ExtResource("4_h1ovc")
+
+[node name="CloseButton" type="Button" parent="ActionPanel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -60.0
+offset_right = 333.0
+grow_vertical = 0
+theme_override_constants/icon_max_width = 50
+theme_override_fonts/font = ExtResource("3_utlfe")
+theme_override_font_sizes/font_size = 32
+text = "Закрыть"
+icon = ExtResource("7_kegxc")
+
+[connection signal="pressed" from="ActionPanel/KickButton" to="." method="_on_kick_player"]
+[connection signal="pressed" from="ActionPanel/FreezeButton" to="." method="_on_freeze_button_pressed"]
+[connection signal="pressed" from="ActionPanel/CloseButton" to="." method="_on_close_menu"]
