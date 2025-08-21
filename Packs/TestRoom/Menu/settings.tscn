@@ -152,7 +152,7 @@ volume_db = -10.0
 bus = &"Music"
 playback_type = 1
 
-[connection signal="toggled" from="Panel/VSync" to="." method="_on_v_sync_toggled_off"]
 [connection signal="toggled" from="Panel/VSync" to="." method="_on_v_sync_toggled"]
+[connection signal="toggled" from="Panel/VSync" to="." method="_on_v_sync_toggled_off"]
 [connection signal="pressed" from="Panel/FullScreen" to="." method="_on_full_screen_pressed"]
 [connection signal="item_selected" from="Panel/ScreenSize" to="." method="_on_screen_size_item_selected"]
