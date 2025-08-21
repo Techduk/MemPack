@@ -6,7 +6,6 @@ var rooms = {}
 var json = JSON.new()
 var session_id: String
 const CLOUD_SERVER = "ws://localhost:3000" #Local Hosting
-#const CLOUD_SERVER = "wss://www.mempack.fun"
 var ws_connected := false
 var connection_attempts := 0
 const MAX_ATTEMPTS := 6
@@ -15,8 +14,8 @@ var player_id : String
 
 # --- Секция сигналов ---
 signal room_created(room_code: String, join_link: String)
-signal player_joined(room: String, player_name: String)
-signal player_disconnected(room: String, player_name: String)
+signal player_joined(player_name: String, player_id: String)  # Убедимся, что передаём player_id
+signal player_disconnected(player_name: String, player_id: String)
 signal error_occurred(error: String)
 
 # --- Сохранение состояния комнаты ---
@@ -84,57 +83,33 @@ func _process(_delta):
 			emit_signal("error_occurred", "Ошибка парсинга ответа сервера.")
 
 # --- Обработка сообщений ---
-func _handle_message(data: Dictionary):
-	print("Получено от сервера: ", data)
-	if data["type"] == "room_created":
-		session_id = data["roomCode"]
-		var join_link = data["link"]
-		print("Комната создана, ссылка: ", join_link)
-		DisplayServer.clipboard_set(join_link)
-		emit_signal("room_created", session_id, join_link)
-	elif data["type"] == "system":
-		if data["text"].ends_with("joined"):
-			var player_name = data["text"].split(" ")[0]
-			print("Извлечено имя игрока: ", player_name)
-			if not rooms.has(session_id):
-				rooms[session_id] = []
-			rooms[session_id].append(player_name)
-			if not room_state.has(session_id):
-				room_state[session_id] = []
-			room_state[session_id].append({"name": player_name, "score": 0})
-			emit_signal("player_joined", session_id, player_name)
-		elif data["text"].ends_with("disconnected"):
-			var player_name = data["text"].split(" ")[0]
-			print("Извлечено имя отключённого игрока: ", player_name)
-			if rooms.has(session_id) and player_name in rooms[session_id]:
-				rooms[session_id].erase(player_name)
-				if room_state.has(session_id):
-					room_state[session_id] = room_state[session_id].filter(func(p): return p.name != player_name)
-				emit_signal("player_disconnected", session_id, player_name)
-	elif data["type"] == "restore":
-		if data.has("state") and room_state.has(session_id):
-			room_state[session_id] = data["state"]
-			for player in room_state[session_id]:
-				emit_signal("player_joined", session_id, player.name)
-	elif data["type"] == "join":
-		if not rooms.has(session_id):
-			rooms[session_id] = []
-		rooms[session_id].append(data["name"])
-		if not room_state.has(session_id):
-			room_state[session_id] = []
-		room_state[session_id].append({"name": data["name"], "score": 0})
-		emit_signal("player_joined", session_id, data["name"])
-		_broadcast(session_id, { "type": "join", "name": data["name"], "text": data["text"] })
-	elif data["type"] == "ping":
-		print("Получен пинг от сервера")
-		send_request({ "type": "pong", "id": player_id })
-		print("Отправлен pong с id: ", player_id)
-	elif data["type"] == "error":
-		print("Ошибка сервера: ", data["text"])
-		if data["text"].contains("Room already exists"):
-			_generate_unique_session_id()
-		else:
-			emit_signal("error_occurred", "Ошибка: " + data["text"])
+func _handle_message(data):
+	if data.has("type"):
+		if data["type"] == "room_created":
+			session_id = data["roomCode"]
+			rooms[session_id] = {}
+			emit_signal("room_created", session_id, data["link"])
+		elif data["type"] == "join" or data["type"] == "system":  # Обработка и "join", и "system"
+			var room = data.get("room", session_id)  # Если room нет, используем session_id
+			var name = data.get("name")
+			var id = data.get("id")  # Извлекаем player_id, если есть
+			if name and id:  # Убедимся, что данные есть
+				print("Обработка игрока: ", name, " с ID: ", id)
+				if not rooms[room].has(name):
+					rooms[room][name] = { "id": id }
+				emit_signal("player_joined", room, name, id)  # Передаём player_id
+			else:
+				print("Ошибка: Отсутствуют name или id в данных: ", data)
+		elif data["type"] == "ping":
+			print("Получен пинг от сервера")
+			send_request({ "type": "pong", "id": player_id })
+			print("Отправлен pong с id: ", player_id)
+		elif data["type"] == "error":
+			print("Ошибка сервера: ", data["text"])
+			if data["text"].contains("Room already exists"):
+				_generate_unique_session_id()
+			else:
+				emit_signal("error_occurred", "Ошибка: " + data["text"])
 
 # --- Вспомогательные функции ---
 func send_request(data: Dictionary):

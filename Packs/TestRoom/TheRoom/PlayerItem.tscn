@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://qdyw4ksh5qem"]
 
-[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/PlayerItem.gd" id="1_8bn4l"]
+[ext_resource type="Script" path="res://Packs/TestRoom/Source/Scripts/Room/PlayerItem.gd" id="1_c0xs8"]
 [ext_resource type="Texture2D" uid="uid://cg08n2nxva8n2" path="res://Packs/TestRoom/Source/Images/Player_icons/Triagle.png" id="1_qfcfs"]
 [ext_resource type="Theme" uid="uid://kj15a34t0y0i" path="res://Packs/TestRoom/Source/TestRoom_GlobalTheme.tres" id="2_j6t8g"]
 [ext_resource type="FontFile" uid="uid://coaiykqgdlk22" path="res://Packs/TestRoom/Source/Fonts/KomUni.otf" id="3_utlfe"]
@@ -14,13 +14,11 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 137.0
-offset_top = 298.0
-offset_right = -1450.0
-offset_bottom = -677.0
+offset_right = -1587.0
+offset_bottom = -975.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_8bn4l")
+script = ExtResource("1_c0xs8")
 
 [node name="PlayerIcon" type="TextureRect" parent="."]
 layout_mode = 0
