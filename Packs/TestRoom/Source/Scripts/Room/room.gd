@@ -2,7 +2,7 @@ extends Control
 
 # --- Секция переменных ---
 @onready var room_label = $RoomLabel
-@onready var players_container = $PlayersContainer  # Должен быть VBoxContainer
+@onready var players_container = $PlayersContainer
 
 # Сохранение состояния игроков
 var player_nodes = {}
@@ -28,31 +28,23 @@ func _on_room_created(room_code: String, join_link: String):
 	$Connecting.visible = false
 	print("Отображено: ", room_label.text)
 
-func _on_player_joined(_room: String, player_name: String, player_id: String):
-	print("Начало обработки _on_player_joined для ", player_name, " с ID: ", player_id)
+func _on_player_joined(_room: String, player_name: String):
+	print("Игрок присоединился: ", player_name)
 	if not player_nodes.has(player_name):
 		# Инстанцируем новую сцену PlayerItem
 		var player_item = preload("res://Packs/TestRoom/TheRoom/PlayerItem.tscn").instantiate()
-		if player_item == null:
-			print("Ошибка: Не удалось загрузить PlayerItem.tscn")
-			return
-		print("Инстанс создан: ", player_item)
 		player_item.player_name = player_name
-		player_item.player_id = player_id  # Передаём player_id
 		
 		# Получаем случайную иконку из ResourceManager
 		var resource_manager = get_node_or_null("/root/ResourceManager")
 		if resource_manager:
-			var icon = resource_manager.get_random_icon()
-			player_item.icon_texture = icon
-			print("Установлена иконка: ", icon)
+			player_item.icon_texture = resource_manager.get_random_icon()
 		else:
 			print("Ошибка: ResourceManager не найден")
 			room_label.text += "\nОшибка: ResourceManager не найден"
 		
 		players_container.add_child(player_item)
 		player_nodes[player_name] = player_item
-		print("Добавлен player_item: ", player_item, " с именем: ", player_name)  # Расширенный отладочный вывод
 	else:
 		print("Игрок ", player_name, " уже существует, обновление пропущено")
 
