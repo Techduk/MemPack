@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").createServer(app);
 const wss = new WebSocket.Server({ server });
 
-// Хранилище комнат: { roomCode: { host: WebSocket, players: { ws: WebSocket, name: String, id: String, lastPing: Number }[] } }
+// Хранилище комнат: { roomCode: { host: WebSocket, players: { ws: WebSocket, name: String, id: String, lastPing: Number, frozen: boolean }[] } }
 const rooms = {};
 
 // Генерация кода комнаты
@@ -36,17 +36,19 @@ function checkPings() {
         const room = rooms[roomCode];
         const now = Date.now();
         room.players = room.players.filter((player) => {
+            if (player.frozen) {
+                return true;
+            }
             if (now - player.lastPing > 30000) {
                 // 30 секунд
                 if (player.ws.readyState === WebSocket.OPEN) {
                     player.ws.close();
                 }
-                // ИЗМЕНЕНО: Вместо "system" используем "player_left" с name и id
                 broadcast(roomCode, {
                     type: "player_left",
                     name: player.name,
                     id: player.id,
-                    reason: "inactivity"  // Опционально, для отладки
+                    reason: "inactivity"
                 });
                 console.log(`${player.name} disconnected due to inactivity`);
                 return false;
@@ -108,20 +110,19 @@ app.get("/", (req, res) => {
                     localStorage.setItem('playerId', playerId);
                 }
 
-                // ИЗМЕНЕНО: Добавляем обработчик для блокировки пробела
                 document.addEventListener('DOMContentLoaded', () => {
                     const roomCodeInput = document.getElementById('roomCode');
                     const nicknameInput = document.getElementById('nickname');
                     
                     roomCodeInput.addEventListener('keydown', (event) => {
                         if (event.keyCode === 32) {
-                            event.preventDefault(); // Блокируем пробел
+                            event.preventDefault();
                         }
                     });
                     
                     nicknameInput.addEventListener('keydown', (event) => {
                         if (event.keyCode === 32) {
-                            event.preventDefault(); // Блокируем пробел
+                            event.preventDefault();
                         }
                     });
                 });
@@ -235,7 +236,7 @@ app.get("/join/:roomCode", (req, res) => {
                         console.log("WebSocket closed:", e.reason);
                         const chat = document.getElementById('chat');
                         chat.innerHTML += \`<p style="color: red;">Disconnected from server</p>\`;
-                        setTimeout(reconnect, 2000); // Переподключение каждые 2 секунды
+                        setTimeout(reconnect, 2000);
                     };
                 }
 
@@ -293,8 +294,8 @@ wss.on("connection", (ws, req) => {
             if (data.type === "create") {
                 if (!rooms[roomCode]) {
                     rooms[roomCode] = { host: ws, players: [] };
-                    ws.lastPing = Date.now(); // Инициализируем lastPing для хоста
-                    ws.id = data.id; // Сохраняем ID хоста
+                    ws.lastPing = Date.now();
+                    ws.id = data.id;
                     console.log(
                         `Room ${roomCode} created by host with id: ${data.id}`,
                     );
@@ -305,7 +306,6 @@ wss.on("connection", (ws, req) => {
                             link: `http://${req.headers.host}/join/${roomCode}`,
                         }),
                     );
-                    // Запуск пинга для хоста
                     const pingInterval = setInterval(() => {
                         if (ws.readyState === WebSocket.OPEN) {
                             ws.send(
@@ -315,7 +315,7 @@ wss.on("connection", (ws, req) => {
                                 `Sent ping to host with id ${data.id} in room ${roomCode} at ${new Date().toISOString()}`,
                             );
                         }
-                    }, 30000); // Пинг каждые 30 секунд
+                    }, 30000);
                     ws.on("close", () => {
                         clearInterval(pingInterval);
                         console.log(
@@ -348,6 +348,7 @@ wss.on("connection", (ws, req) => {
                             name: data.state[0].name,
                             id: data.id,
                             lastPing: Date.now(),
+                            frozen: data.state[0].frozen || false
                         });
                     }
                     broadcast(roomCode, {
@@ -370,8 +371,8 @@ wss.on("connection", (ws, req) => {
                             name: data.name,
                             id: data.id,
                             lastPing: Date.now(),
+                            frozen: false
                         });
-                        // ИЗМЕНЕНО: Вместо "system" используем "player_joined" с name и id
                         broadcast(roomCode, {
                             type: "player_joined",
                             name: data.name || "Anonymous",
@@ -383,14 +384,12 @@ wss.on("connection", (ws, req) => {
                     } else {
                         existingPlayer.ws = ws;
                         existingPlayer.lastPing = Date.now();
-                        // ИЗМЕНЕНО: Для реконнекта тоже "player_joined"
                         broadcast(roomCode, {
                             type: "player_joined",
                             name: data.name,
                             id: data.id
                         });
                     }
-                    // Запуск пинга для нового игрока
                     const pingInterval = setInterval(() => {
                         if (ws.readyState === WebSocket.OPEN) {
                             ws.send(
@@ -400,7 +399,7 @@ wss.on("connection", (ws, req) => {
                                 `Sent ping to player ${data.name} in room ${roomCode} at ${new Date().toISOString()}`,
                             );
                         }
-                    }, 30000); // Пинг каждые 30 секунд
+                    }, 30000);
                     ws.on("close", () => {
                         clearInterval(pingInterval);
                         console.log(
@@ -413,6 +412,66 @@ wss.on("connection", (ws, req) => {
                             type: "error",
                             text: "Room does not exist",
                         }),
+                    );
+                }
+            } else if (data.type === "freeze") {
+                if (rooms[roomCode] && rooms[roomCode].host === ws) {
+                    const player = rooms[roomCode].players.find(
+                        (p) => p.id === data.id
+                    );
+                    if (player) {
+                        player.frozen = true;
+                        console.log(`Player ${player.name} frozen in room ${roomCode}`);
+                        broadcast(roomCode, {
+                            type: "player_updated",
+                            name: player.name,
+                            id: player.id,
+                            frozen: true
+                        });
+                    } else {
+                        ws.send(
+                            JSON.stringify({
+                                type: "error",
+                                text: "Player not found"
+                            })
+                        );
+                    }
+                } else {
+                    ws.send(
+                        JSON.stringify({
+                            type: "error",
+                            text: "Only host can freeze players"
+                        })
+                    );
+                }
+            } else if (data.type === "unfreeze") {  // ИЗМЕНЕНО: Обработка сообщения unfreeze
+                if (rooms[roomCode] && rooms[roomCode].host === ws) {
+                    const player = rooms[roomCode].players.find(
+                        (p) => p.id === data.id
+                    );
+                    if (player) {
+                        player.frozen = false;
+                        console.log(`Player ${player.name} unfrozen in room ${roomCode}`);
+                        broadcast(roomCode, {
+                            type: "player_updated",
+                            name: player.name,
+                            id: player.id,
+                            frozen: false
+                        });
+                    } else {
+                        ws.send(
+                            JSON.stringify({
+                                type: "error",
+                                text: "Player not found"
+                            })
+                        );
+                    }
+                } else {
+                    ws.send(
+                        JSON.stringify({
+                            type: "error",
+                            text: "Only host can unfreeze players"
+                        })
                     );
                 }
             } else if (data.type === "chat") {
@@ -467,16 +526,15 @@ wss.on("connection", (ws, req) => {
                 console.log(`Room ${roomCode} closed`);
             } else {
                 const player = rooms[roomCode].players.find((p) => p.ws === ws);
-                if (player) {
+                if (player && !player.frozen) {
                     rooms[roomCode].players = rooms[roomCode].players.filter(
                         (p) => p.ws !== ws,
                     );
-                    // ИЗМЕНЕНО: Вместо "system" используем "player_left" с name и id
                     broadcast(roomCode, {
                         type: "player_left",
                         name: player.name,
                         id: player.id,
-                        reason: "closed"  // Опционально, для отладки
+                        reason: "closed"
                     });
                     console.log(`${player.name} left room ${roomCode}`);
                 }

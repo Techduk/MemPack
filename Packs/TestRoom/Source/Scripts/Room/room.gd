@@ -13,6 +13,7 @@ func _ready():
 	ServerCore.player_joined.connect(_on_player_joined)
 	ServerCore.player_disconnected.connect(_on_player_disconnected)
 	ServerCore.error_occurred.connect(_on_error)
+	ServerCore.player_updated.connect(_on_player_updated)
 	print("Room.tscn: Загрузка начата")
 	print("RoomLabel: ", room_label)
 	print("PlayersContainer: ", players_container)
@@ -28,12 +29,13 @@ func _on_room_created(room_code: String, join_link: String):
 	$Connecting.visible = false
 	print("Отображено: ", room_label.text)
 
-func _on_player_joined(_room: String, player_name: String):
-	print("Игрок присоединился: ", player_name)
+func _on_player_joined(_room: String, player_name: String, player_id: String):  # ИЗМЕНЕНО: Добавлен player_id
+	print("Создание PlayerItem для ", player_name, " с ID: ", player_id)
 	if not player_nodes.has(player_name):
 		# Инстанцируем новую сцену PlayerItem
 		var player_item = preload("res://Packs/TestRoom/TheRoom/PlayerItem.tscn").instantiate()
 		player_item.player_name = player_name
+		player_item.player_id = player_id  # ИЗМЕНЕНО: Устанавливаем player_id
 		
 		# Получаем случайную иконку из ResourceManager
 		var resource_manager = get_node_or_null("/root/ResourceManager")
@@ -54,6 +56,12 @@ func _on_player_disconnected(_room: String, player_name: String):
 		player_node.queue_free()
 		player_nodes.erase(player_name)
 		print("Игрок ", player_name, " удалён из списка")
+
+func _on_player_updated(_room: String, player_name: String, frozen: bool):
+	var player_node = player_nodes.get(player_name)
+	if player_node:
+		player_node.set_frozen(frozen)
+		print("Игрок ", player_name, " обновлён, frozen: ", frozen)
 
 func _on_error(error: String):
 	room_label.text += "\nОшибка: " + error

@@ -15,12 +15,13 @@ var player_id : String
 
 # --- Секция сигналов ---
 signal room_created(room_code: String, join_link: String)
-signal player_joined(room: String, player_name: String)
+signal player_joined(room: String, player_name: String, player_id: String)  # ИЗМЕНЕНО: Добавлен player_id
 signal player_disconnected(room: String, player_name: String)
 signal error_occurred(error: String)
+signal player_updated(room: String, player_name: String, frozen: bool)
 
 # --- Сохранение состояния комнаты ---
-var room_state = {} # { room_code: { players: [{name: String, score: int}] } }
+var room_state = {} # { room_code: { players: [{name: String, score: int, frozen: bool, id: String}] } }  # ИЗМЕНЕНО: Добавлено id
 
 # --- Инициализация ---
 func start_server():
@@ -92,43 +93,56 @@ func _handle_message(data: Dictionary):
 		print("Комната создана, ссылка: ", join_link)
 		DisplayServer.clipboard_set(join_link)
 		emit_signal("room_created", session_id, join_link)
-	elif data["type"] == "player_joined":  # ИЗМЕНЕНО: Новая обработка для подключения игрока
+	elif data["type"] == "player_joined":
 		var player_name = data["name"]
-		var player_id_from_server = data["id"]  # Можно использовать для дополнительных проверок позже
+		var player_id_from_server = data["id"]
 		print("Игрок присоединился: ", player_name, " с ID: ", player_id_from_server)
 		if not rooms.has(session_id):
 			rooms[session_id] = []
 		rooms[session_id].append(player_name)
 		if not room_state.has(session_id):
 			room_state[session_id] = []
-		room_state[session_id].append({"name": player_name, "score": 0})
-		emit_signal("player_joined", session_id, player_name)
-	elif data["type"] == "player_left":  # ИЗМЕНЕНО: Новая обработка для отключения игрока
+		room_state[session_id].append({"name": player_name, "score": 0, "frozen": false, "id": player_id_from_server})  # ИЗМЕНЕНО: Добавлено id
+		emit_signal("player_joined", session_id, player_name, player_id_from_server)  # ИЗМЕНЕНО: Передаём player_id
+	elif data["type"] == "player_left":
 		var player_name = data["name"]
 		var player_id_from_server = data["id"]
-		var reason = data.get("reason", "unknown")  # Опционально, для логов
+		var reason = data.get("reason", "unknown")
 		print("Игрок отключился: ", player_name, " с ID: ", player_id_from_server, " (причина: ", reason, ")")
 		if rooms.has(session_id) and player_name in rooms[session_id]:
 			rooms[session_id].erase(player_name)
 			if room_state.has(session_id):
 				room_state[session_id] = room_state[session_id].filter(func(p): return p.name != player_name)
 			emit_signal("player_disconnected", session_id, player_name)
-	elif data["type"] == "system":  # Оставляем для других системных сообщений (например, о хосте)
+	elif data["type"] == "player_updated":
+		var player_name = data["name"]
+		var player_id_from_server = data["id"]
+		var frozen = data["frozen"]
+		print("Обновление игрока: ", player_name, " с ID: ", player_id_from_server, ", frozen: ", frozen)
+		if room_state.has(session_id):
+			for player in room_state[session_id]:
+				if player.name == player_name:
+					player.frozen = frozen
+					player.id = player_id_from_server  # ИЗМЕНЕНО: Обновляем id на случай несоответствия
+					break
+			emit_signal("player_updated", session_id, player_name, frozen)
+	elif data["type"] == "system":
 		print("Системное сообщение: ", data["text"])
-		# Здесь можно добавить обработку, если нужно, но для игроков оно больше не используется
 	elif data["type"] == "restore":
 		if data.has("state") and room_state.has(session_id):
 			room_state[session_id] = data["state"]
 			for player in room_state[session_id]:
-				emit_signal("player_joined", session_id, player.name)
+				emit_signal("player_joined", session_id, player.name, player.get("id", ""))  # ИЗМЕНЕНО: Передаём id
+				if player.get("frozen", false):
+					emit_signal("player_updated", session_id, player.name, true)
 	elif data["type"] == "join":
 		if not rooms.has(session_id):
 			rooms[session_id] = []
 		rooms[session_id].append(data["name"])
 		if not room_state.has(session_id):
 			room_state[session_id] = []
-		room_state[session_id].append({"name": data["name"], "score": 0})
-		emit_signal("player_joined", session_id, data["name"])
+		room_state[session_id].append({"name": data["name"], "score": 0, "frozen": false, "id": data.get("id", "")})  # ИЗМЕНЕНО: Добавлено id
+		emit_signal("player_joined", session_id, data["name"], data.get("id", ""))  # ИЗМЕНЕНО: Передаём id
 		_broadcast(session_id, { "type": "join", "name": data["name"], "text": data["text"] })
 	elif data["type"] == "ping":
 		print("Получен пинг от сервера")
