@@ -92,25 +92,30 @@ func _handle_message(data: Dictionary):
 		print("Комната создана, ссылка: ", join_link)
 		DisplayServer.clipboard_set(join_link)
 		emit_signal("room_created", session_id, join_link)
-	elif data["type"] == "system":
-		if data["text"].ends_with("joined"):
-			var player_name = data["text"].split(" ")[0]
-			print("Извлечено имя игрока: ", player_name)
-			if not rooms.has(session_id):
-				rooms[session_id] = []
-			rooms[session_id].append(player_name)
-			if not room_state.has(session_id):
-				room_state[session_id] = []
-			room_state[session_id].append({"name": player_name, "score": 0})
-			emit_signal("player_joined", session_id, player_name)
-		elif data["text"].ends_with("disconnected"):
-			var player_name = data["text"].split(" ")[0]
-			print("Извлечено имя отключённого игрока: ", player_name)
-			if rooms.has(session_id) and player_name in rooms[session_id]:
-				rooms[session_id].erase(player_name)
-				if room_state.has(session_id):
-					room_state[session_id] = room_state[session_id].filter(func(p): return p.name != player_name)
-				emit_signal("player_disconnected", session_id, player_name)
+	elif data["type"] == "player_joined":  # ИЗМЕНЕНО: Новая обработка для подключения игрока
+		var player_name = data["name"]
+		var player_id_from_server = data["id"]  # Можно использовать для дополнительных проверок позже
+		print("Игрок присоединился: ", player_name, " с ID: ", player_id_from_server)
+		if not rooms.has(session_id):
+			rooms[session_id] = []
+		rooms[session_id].append(player_name)
+		if not room_state.has(session_id):
+			room_state[session_id] = []
+		room_state[session_id].append({"name": player_name, "score": 0})
+		emit_signal("player_joined", session_id, player_name)
+	elif data["type"] == "player_left":  # ИЗМЕНЕНО: Новая обработка для отключения игрока
+		var player_name = data["name"]
+		var player_id_from_server = data["id"]
+		var reason = data.get("reason", "unknown")  # Опционально, для логов
+		print("Игрок отключился: ", player_name, " с ID: ", player_id_from_server, " (причина: ", reason, ")")
+		if rooms.has(session_id) and player_name in rooms[session_id]:
+			rooms[session_id].erase(player_name)
+			if room_state.has(session_id):
+				room_state[session_id] = room_state[session_id].filter(func(p): return p.name != player_name)
+			emit_signal("player_disconnected", session_id, player_name)
+	elif data["type"] == "system":  # Оставляем для других системных сообщений (например, о хосте)
+		print("Системное сообщение: ", data["text"])
+		# Здесь можно добавить обработку, если нужно, но для игроков оно больше не используется
 	elif data["type"] == "restore":
 		if data.has("state") and room_state.has(session_id):
 			room_state[session_id] = data["state"]

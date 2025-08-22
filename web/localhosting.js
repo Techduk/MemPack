@@ -41,9 +41,12 @@ function checkPings() {
                 if (player.ws.readyState === WebSocket.OPEN) {
                     player.ws.close();
                 }
+                // ИЗМЕНЕНО: Вместо "system" используем "player_left" с name и id
                 broadcast(roomCode, {
-                    type: "system",
-                    text: `${player.name} disconnected due to inactivity`,
+                    type: "player_left",
+                    name: player.name,
+                    id: player.id,
+                    reason: "inactivity"  // Опционально, для отладки
                 });
                 console.log(`${player.name} disconnected due to inactivity`);
                 return false;
@@ -104,6 +107,24 @@ app.get("/", (req, res) => {
                     playerId = "${generateUniqueId()}";
                     localStorage.setItem('playerId', playerId);
                 }
+
+                // ИЗМЕНЕНО: Добавляем обработчик для блокировки пробела
+                document.addEventListener('DOMContentLoaded', () => {
+                    const roomCodeInput = document.getElementById('roomCode');
+                    const nicknameInput = document.getElementById('nickname');
+                    
+                    roomCodeInput.addEventListener('keydown', (event) => {
+                        if (event.keyCode === 32) {
+                            event.preventDefault(); // Блокируем пробел
+                        }
+                    });
+                    
+                    nicknameInput.addEventListener('keydown', (event) => {
+                        if (event.keyCode === 32) {
+                            event.preventDefault(); // Блокируем пробел
+                        }
+                    });
+                });
 
                 function joinChat(event) {
                     event.preventDefault();
@@ -350,9 +371,11 @@ wss.on("connection", (ws, req) => {
                             id: data.id,
                             lastPing: Date.now(),
                         });
+                        // ИЗМЕНЕНО: Вместо "system" используем "player_joined" с name и id
                         broadcast(roomCode, {
-                            type: "system",
-                            text: `${data.name || "Anonymous"} joined`,
+                            type: "player_joined",
+                            name: data.name || "Anonymous",
+                            id: data.id
                         });
                         console.log(
                             `Player ${data.name || "Anonymous"} joined room ${roomCode}`,
@@ -360,9 +383,11 @@ wss.on("connection", (ws, req) => {
                     } else {
                         existingPlayer.ws = ws;
                         existingPlayer.lastPing = Date.now();
+                        // ИЗМЕНЕНО: Для реконнекта тоже "player_joined"
                         broadcast(roomCode, {
-                            type: "system",
-                            text: `${data.name} reconnected`,
+                            type: "player_joined",
+                            name: data.name,
+                            id: data.id
                         });
                     }
                     // Запуск пинга для нового игрока
@@ -446,9 +471,12 @@ wss.on("connection", (ws, req) => {
                     rooms[roomCode].players = rooms[roomCode].players.filter(
                         (p) => p.ws !== ws,
                     );
+                    // ИЗМЕНЕНО: Вместо "system" используем "player_left" с name и id
                     broadcast(roomCode, {
-                        type: "system",
-                        text: `${player.name} disconnected`,
+                        type: "player_left",
+                        name: player.name,
+                        id: player.id,
+                        reason: "closed"  // Опционально, для отладки
                     });
                     console.log(`${player.name} left room ${roomCode}`);
                 }

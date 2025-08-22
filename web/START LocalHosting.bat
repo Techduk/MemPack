@@ -1,3 +1,3 @@
 @echo off
-node S:\Works\mempack\localhosting.js
+node S:\Works\MemPack\web\localhosting.js
 pause
