@@ -40,7 +40,6 @@ function checkPings() {
                 return true;
             }
             if (now - player.lastPing > 30000) {
-                // 30 секунд
                 if (player.ws.readyState === WebSocket.OPEN) {
                     player.ws.close();
                 }
@@ -55,7 +54,6 @@ function checkPings() {
             }
             return true;
         });
-        // Проверка хоста
         if (room.host && now - (room.host.lastPing || 0) > 30000) {
             if (room.host.readyState === WebSocket.OPEN) {
                 room.host.close();
@@ -71,7 +69,7 @@ function checkPings() {
         }
     }
 }
-setInterval(checkPings, 30000); // Проверка каждые 30 секунд
+setInterval(checkPings, 30000);
 
 // Главная страница с формой
 app.get("/", (req, res) => {
@@ -93,14 +91,14 @@ app.get("/", (req, res) => {
         </head>
         <body>
             <div class="form-container">
-                <h1>Присоединится к комнате</h1>
+                <h1>Присоединиться к комнате</h1>
                 <p>Введите код комнаты и ник для игры!</p>
                 <form id="joinForm" onsubmit="joinChat(event)">
                     <input type="text" id="roomCode" value="${roomCode}" placeholder="JFPr06" maxlength="6" required>
                     <div id="roomCodeError" class="error">Код комнаты состоит из 6-ти символов.</div>
                     <input type="text" id="nickname" placeholder="Певец227" maxlength="9" required>
                     <div id="nicknameError" class="error">Необходим ник для игры.</div>
-                    <button type="submit">Присоединится</button>
+                    <button type="submit">Присоединиться</button>
                 </form>
             </div>
             <script>
@@ -149,6 +147,7 @@ app.get("/", (req, res) => {
 
                     if (isValid) {
                         localStorage.setItem('nickname', nickname);
+                        localStorage.removeItem('wasKicked');
                         window.location.href = '/join/' + roomCode + '?id=' + playerId;
                     }
                 }
@@ -191,10 +190,13 @@ app.get("/join/:roomCode", (req, res) => {
                 }
 
                 function reconnect() {
-                    if (ws.readyState === WebSocket.CLOSED) {
+                    if (ws.readyState === WebSocket.CLOSED && !localStorage.getItem('wasKicked')) {
                         console.log("Attempting to reconnect...");
                         ws = new WebSocket("ws://" + window.location.host + "/ws/${roomCode}");
                         setupWebSocket();
+                    } else if (localStorage.getItem('wasKicked')) {
+                        console.log("Reconnect blocked: Player was kicked");
+                        window.location.href = '/?roomCode=${roomCode}';
                     }
                 }
 
@@ -216,9 +218,17 @@ app.get("/join/:roomCode", (req, res) => {
                             if (data.type === "ping") {
                                 ws.send(JSON.stringify({ type: "pong", id: playerId }));
                                 console.log("Sent pong with playerId: " + playerId);
+                            } else if (data.type === "kick" && data.id === playerId) {
+                                const chat = document.getElementById('chat');
+                                chat.innerHTML += '<p style="color: red;">Вы были исключены из комнаты (причина: kicked)</p>';
+                                chat.scrollTop = chat.scrollHeight;
+                                localStorage.setItem('wasKicked', 'true');
+                                localStorage.removeItem('playerId');
+                                localStorage.removeItem('nickname');
+                                window.location.href = '/?roomCode=${roomCode}';
                             } else {
                                 const chat = document.getElementById('chat');
-                                chat.innerHTML += \`<p><b>\${data.name || 'Unknown'}:</b> \${data.text}</p>\`;
+                                chat.innerHTML += '<p><b>' + (data.name || 'Unknown') + ':</b> ' + data.text + '</p>';
                                 chat.scrollTop = chat.scrollHeight;
                             }
                         } catch (err) {
@@ -229,14 +239,16 @@ app.get("/join/:roomCode", (req, res) => {
                     ws.onerror = (error) => {
                         console.error("WebSocket Error:", error);
                         const chat = document.getElementById('chat');
-                        chat.innerHTML += \`<p style="color: red;">Error: Could not connect to server</p>\`;
+                        chat.innerHTML += '<p style="color: red;">Error: Could not connect to server</p>';
                     };
 
                     ws.onclose = (e) => {
                         console.log("WebSocket closed:", e.reason);
                         const chat = document.getElementById('chat');
-                        chat.innerHTML += \`<p style="color: red;">Disconnected from server</p>\`;
-                        setTimeout(reconnect, 2000);
+                        chat.innerHTML += '<p style="color: red;">Disconnected from server</p>';
+                        if (!localStorage.getItem('wasKicked')) {
+                            setTimeout(reconnect, 5000);
+                        }
                     };
                 }
 
@@ -247,7 +259,7 @@ app.get("/join/:roomCode", (req, res) => {
                     const text = input.value.trim();
                     if (text.length > 999) {
                         const chat = document.getElementById('chat');
-                        chat.innerHTML += \`<p style="color: red;">Error: Message cannot exceed 999 characters.</p>\`;
+                        chat.innerHTML += '<p style="color: red;">Error: Message cannot exceed 999 characters.</p>';
                         chat.scrollTop = chat.scrollHeight;
                         return;
                     }
@@ -263,7 +275,7 @@ app.get("/join/:roomCode", (req, res) => {
                     } else {
                         console.error("WebSocket is not connected or message is empty");
                         const chat = document.getElementById('chat');
-                        chat.innerHTML += \`<p style="color: red;">Error: Not connected to server or message is empty</p>\`;
+                        chat.innerHTML += '<p style="color: red;">Error: Not connected to server or message is empty</p>';
                         chat.scrollTop = chat.scrollHeight;
                     }
                 };
@@ -283,7 +295,7 @@ app.get("/join/:roomCode", (req, res) => {
 wss.on("connection", (ws, req) => {
     console.log("New WebSocket connection");
 
-    const roomCode = req.url.slice(4); // Удаляем "/ws/"
+    const roomCode = req.url.slice(4);
     console.log(`WebSocket connection for room: ${roomCode}`);
 
     ws.on("message", (message) => {
@@ -293,7 +305,7 @@ wss.on("connection", (ws, req) => {
 
             if (data.type === "create") {
                 if (!rooms[roomCode]) {
-                    rooms[roomCode] = { host: ws, players: [] };
+                    rooms[roomCode] = { host: ws, players: [] }; // ИЗМЕНЕНО: Убран banned
                     ws.lastPing = Date.now();
                     ws.id = data.id;
                     console.log(
@@ -444,7 +456,7 @@ wss.on("connection", (ws, req) => {
                         })
                     );
                 }
-            } else if (data.type === "unfreeze") {  // ИЗМЕНЕНО: Обработка сообщения unfreeze
+            } else if (data.type === "unfreeze") {
                 if (rooms[roomCode] && rooms[roomCode].host === ws) {
                     const player = rooms[roomCode].players.find(
                         (p) => p.id === data.id
@@ -471,6 +483,46 @@ wss.on("connection", (ws, req) => {
                         JSON.stringify({
                             type: "error",
                             text: "Only host can unfreeze players"
+                        })
+                    );
+                }
+            } else if (data.type === "kick") {
+                if (rooms[roomCode] && rooms[roomCode].host === ws) {
+                    const player = rooms[roomCode].players.find(
+                        (p) => p.id === data.id
+                    );
+                    if (player) {
+                        rooms[roomCode].players = rooms[roomCode].players.filter(
+                            (p) => p.id !== data.id
+                        );
+                        if (player.ws.readyState === WebSocket.OPEN) {
+                            player.ws.send(JSON.stringify({
+                                type: "kick",
+                                id: player.id,
+                                reason: "kicked"
+                            }));
+                            setTimeout(() => player.ws.close(), 100);
+                        }
+                        console.log(`Player ${player.name} kicked from room ${roomCode}`);
+                        broadcast(roomCode, {
+                            type: "player_left",
+                            name: player.name,
+                            id: player.id,
+                            reason: "kicked"
+                        });
+                    } else {
+                        ws.send(
+                            JSON.stringify({
+                                type: "error",
+                                text: "Player not found"
+                            })
+                        );
+                    }
+                } else {
+                    ws.send(
+                        JSON.stringify({
+                            type: "error",
+                            text: "Only host can kick players"
                         })
                     );
                 }
